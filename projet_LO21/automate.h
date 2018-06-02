@@ -12,9 +12,6 @@ private:
     std::string info;
 };
 
-short unsigned int NumBitToNum(const std::string& num);
-std::string NumToNumBit(short unsigned int num);
-
 class Etat {
     unsigned int dimension;
     bool* valeur;
@@ -31,22 +28,48 @@ public:
 
 std::ostream& operator<<(std::ostream& f, const Etat& e);
 
-class Automate {
+class Automate{
+    virtual void appliquerTransition(const Etat& dep, Etat& dest) const = 0;
+    //QXMLObject save() const;
+};
+
+class AutomateUneDimension : public Automate {
     unsigned short int numero;
     std::string numeroBit;
-    Automate(unsigned short int num);
-    Automate(const std::string& num);
-    ~Automate(){}
-    Automate(const Automate& a);
-    Automate& operator=(const Automate& a);
+    AutomateUneDimension(unsigned short int num);
+    AutomateUneDimension(const std::string& num);
+    ~AutomateUneDimension(){}
+    AutomateUneDimension(const AutomateUneDimension& a);
+    AutomateUneDimension& operator=(const AutomateUneDimension& a);
     friend class AutomateManager;
+    static short unsigned int NumBitToNum(const std::string& num);
+    static std::string NumToNumBit(short unsigned int num);
 public:
     unsigned short int getNumero() const { return numero; }
     const std::string& getNumeroBit() const { return numeroBit; }
-    void appliquerTransition(const Etat& dep, Etat& dest) const;
+    virtual void appliquerTransition(const Etat& dep, Etat& dest) const;
 };
 
-std::ostream& operator<<(std::ostream& f, const Automate& t);
+std::ostream& operator<<(std::ostream& f, const AutomateUneDimension& t);
+
+class AutomateDeuxDimension : public Automate {
+    unsigned short int numero;
+    std::string numeroBit;
+    AutomateDeuxDimension(unsigned short int num);
+    AutomateDeuxDimension(const std::string& num);
+    ~AutomateDeuxDimension(){}
+    AutomateDeuxDimension(const AutomateDeuxDimension& a);
+    AutomateDeuxDimension& operator=(const AutomateDeuxDimension& a);
+    friend class AutomateManager;
+    static short unsigned int NumBitToNum(const std::string& num);
+    static std::string NumToNumBit(short unsigned int num);
+public:
+    unsigned short int getNumero() const { return numero; }
+    const std::string& getNumeroBit() const { return numeroBit; }
+    virtual void appliquerTransition(const Etat& dep, Etat& dest) const;
+};
+
+std::ostream& operator<<(std::ostream& f, const AutomateDeuxDimension& t);
 
 class Simulateur {
     const Automate& automate;
