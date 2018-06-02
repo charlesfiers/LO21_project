@@ -51,9 +51,14 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../projet_LO21/main.cpp \
-		../projet_LO21/xmldoc.cpp 
+		../projet_LO21/automate.cpp \
+		../projet_LO21/autocell.cpp \
+		../projet_LO21/Xml_Dom.cpp moc_autocell.cpp
 OBJECTS       = main.o \
-		xmldoc.o
+		automate.o \
+		autocell.o \
+		Xml_Dom.o \
+		moc_autocell.o
 DIST          = /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/qdevice.pri \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/device_config.prf \
@@ -217,8 +222,12 @@ DIST          = /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf 
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/exceptions.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/yacc.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/lex.prf \
-		../projet_LO21/projet_LO21.pro ../projet_LO21/xmldoc.h ../projet_LO21/main.cpp \
-		../projet_LO21/xmldoc.cpp
+		../projet_LO21/projet_LO21.pro ../projet_LO21/automate.h \
+		../projet_LO21/autocell.h \
+		../projet_LO21/Xml_Dom.h ../projet_LO21/main.cpp \
+		../projet_LO21/automate.cpp \
+		../projet_LO21/autocell.cpp \
+		../projet_LO21/Xml_Dom.cpp
 QMAKE_TARGET  = projet_LO21
 DESTDIR       = 
 TARGET        = projet_LO21.app/Contents/MacOS/projet_LO21
@@ -603,8 +612,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../projet_LO21/xmldoc.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../projet_LO21/main.cpp ../projet_LO21/xmldoc.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../projet_LO21/automate.h ../projet_LO21/autocell.h ../projet_LO21/Xml_Dom.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../projet_LO21/main.cpp ../projet_LO21/automate.cpp ../projet_LO21/autocell.cpp ../projet_LO21/Xml_Dom.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -636,8 +645,36 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -std=c++11 -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -dM -E -o moc_predefs.h /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_autocell.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_autocell.cpp
+moc_autocell.cpp: /Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h \
+		../projet_LO21/autocell.h \
+		moc_predefs.h \
+		/Users/charles/Qt/5.10.1/clang_64/bin/moc
+	/Users/charles/Qt/5.10.1/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/charles/Qt/5.10.1/clang_64/mkspecs/macx-clang -I/Users/charles/Desktop/Cours_UTC/LO21/LO21_project/projet_LO21 -I/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.1.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/charles/Qt/5.10.1/clang_64/lib ../projet_LO21/autocell.h -o moc_autocell.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -652,17 +689,12 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
 main.o: ../projet_LO21/main.cpp /Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/QtXml \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlglobal.h \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qdom.h \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qxml.h \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlversion.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QtGui \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
@@ -767,18 +799,67 @@ main.o: ../projet_LO21/main.cpp /Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindow.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiversion.h \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
-		../projet_LO21/xmldoc.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/QtXml \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlglobal.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qdom.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qxml.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlversion.h \
+		../projet_LO21/autocell.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QFileInfo \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qfileinfo.h \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QDebug \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qdebug.h
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h \
+		../projet_LO21/Xml_Dom.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../projet_LO21/main.cpp
 
-xmldoc.o: ../projet_LO21/xmldoc.cpp ../projet_LO21/xmldoc.h \
+automate.o: ../projet_LO21/automate.cpp ../projet_LO21/automate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o automate.o ../projet_LO21/automate.cpp
+
+autocell.o: ../projet_LO21/autocell.cpp ../projet_LO21/autocell.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o autocell.o ../projet_LO21/autocell.cpp
+
+Xml_Dom.o: ../projet_LO21/Xml_Dom.cpp ../projet_LO21/Xml_Dom.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QtGui \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
@@ -889,8 +970,13 @@ xmldoc.o: ../projet_LO21/xmldoc.cpp ../projet_LO21/xmldoc.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qxml.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlversion.h \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o xmldoc.o ../projet_LO21/xmldoc.cpp
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Xml_Dom.o ../projet_LO21/Xml_Dom.cpp
+
+moc_autocell.o: moc_autocell.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_autocell.o moc_autocell.cpp
 
 ####### Install
 

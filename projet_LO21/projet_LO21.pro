@@ -1,19 +1,16 @@
-QT += \
-    widgets \
-    xml
-
+QT += widgets
+QT += xml
 
 QMAKE_CXXFLAGS = -std=c++11
 QMAKE_LFLAGS = -std=c++11
 
 SOURCES += \
     main.cpp \
-    xmldoc.cpp
+    automate.cpp \
+    autocell.cpp \
+    Xml_Dom.cpp
 
 HEADERS += \
-    xmldoc.h
-
-DISTFILES +=
-
-OTHER_FILES += \
-    doc1.xml
+    automate.h \
+    autocell.h \
+    Xml_Dom.h
