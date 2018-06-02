@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
 CXXFLAGS      = -std=c++11 -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
-INCPATH       = -I../projet_LO21 -I. -I/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/mkspecs/macx-clang -F/Users/charles/Qt/5.10.1/clang_64/lib
+INCPATH       = -I../projet_LO21 -I. -I/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Users/charles/Qt/5.10.1/clang_64/mkspecs/macx-clang -F/Users/charles/Qt/5.10.1/clang_64/lib
 QMAKE         = /Users/charles/Qt/5.10.1/clang_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -38,7 +38,7 @@ DISTNAME      = projet_LO211.0.0
 DISTDIR = /Users/charles/Desktop/Cours_UTC/LO21/LO21_project/build-projet_LO21-Desktop_Qt_5_10_1_clang_64bit-Debug/.tmp/projet_LO211.0.0
 LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 LFLAGS        = -std=c++11 -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wl,-rpath,@executable_path/Frameworks -Wl,-rpath,/Users/charles/Qt/5.10.1/clang_64/lib
-LIBS          = $(SUBLIBS) -F/Users/charles/Qt/5.10.1/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework OpenGL -framework AGL 
+LIBS          = $(SUBLIBS) -F/Users/charles/Qt/5.10.1/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtXml -framework OpenGL -framework AGL 
 AR            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cq
 RANLIB        = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib -s
 SED           = sed
@@ -50,8 +50,10 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../projet_LO21/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../projet_LO21/main.cpp \
+		../projet_LO21/xmldoc.cpp 
+OBJECTS       = main.o \
+		xmldoc.o
 DIST          = /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/qdevice.pri \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/device_config.prf \
@@ -215,7 +217,8 @@ DIST          = /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf 
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/exceptions.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/yacc.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/lex.prf \
-		../projet_LO21/projet_LO21.pro  ../projet_LO21/main.cpp
+		../projet_LO21/projet_LO21.pro ../projet_LO21/xmldoc.h ../projet_LO21/main.cpp \
+		../projet_LO21/xmldoc.cpp
 QMAKE_TARGET  = projet_LO21
 DESTDIR       = 
 TARGET        = projet_LO21.app/Contents/MacOS/projet_LO21
@@ -399,6 +402,7 @@ Makefile: ../projet_LO21/projet_LO21.pro /Users/charles/Qt/5.10.1/clang_64/mkspe
 		../projet_LO21/projet_LO21.pro \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/QtWidgets.prl \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/QtGui.prl \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/QtXml.prl \
 		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/QtCore.prl
 	$(QMAKE) -o Makefile ../projet_LO21/projet_LO21.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug
 /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf:
@@ -567,6 +571,7 @@ Makefile: ../projet_LO21/projet_LO21.pro /Users/charles/Qt/5.10.1/clang_64/mkspe
 ../projet_LO21/projet_LO21.pro:
 /Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/QtWidgets.prl:
 /Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/QtGui.prl:
+/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/QtXml.prl:
 /Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/QtCore.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../projet_LO21/projet_LO21.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug
@@ -598,7 +603,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../projet_LO21/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../projet_LO21/xmldoc.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../projet_LO21/main.cpp ../projet_LO21/xmldoc.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -651,8 +657,240 @@ compiler_clean: compiler_moc_predefs_clean
 ####### Compile
 
 main.o: ../projet_LO21/main.cpp /Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
-		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/QtXml \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlglobal.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qdom.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qxml.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlversion.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QtGui \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessible.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessiblebridge.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessibleobject.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessibleplugin.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbackingstore.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbitmap.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qclipboard.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qcursor.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qdrag.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontinfo.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontmetrics.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericmatrix.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericplugin.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericpluginfactory.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qglyphrun.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qguiapplication.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qicon.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qiconengine.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qiconengineplugin.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimageiohandler.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimagereader.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimagewriter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qinputmethod.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qkeysequence.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmatrix.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmatrix4x4.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmovie.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qoffscreensurface.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengl.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglbuffer.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglcontext.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengldebug.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglextrafunctions.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglframebufferobject.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglfunctions.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglpaintdevice.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglpixeltransferoptions.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglshaderprogram.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltexture.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltextureblitter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltimerquery.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglversionfunctions.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglvertexarrayobject.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglwindow.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagedpaintdevice.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagelayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagesize.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintdevice.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintdevicewindow.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintengine.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpainterpath.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpalette.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpdfwriter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpicture.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpictureformatplugin.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixelformat.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixmapcache.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpolygon.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qquaternion.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrasterwindow.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrawfont.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qregion.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrgb.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrgba64.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qscreen.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsessionmanager.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstandarditemmodel.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstatictext.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstylehints.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsurface.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsurfaceformat.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsyntaxhighlighter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextcursor.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocument.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocumentfragment.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocumentwriter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextformat.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextlayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextlist.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextobject.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextoption.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtexttable.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtouchdevice.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtransform.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector2d.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector3d.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector4d.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindow.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiversion.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
+		../projet_LO21/xmldoc.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QFileInfo \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qfileinfo.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QDebug \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../projet_LO21/main.cpp
+
+xmldoc.o: ../projet_LO21/xmldoc.cpp ../projet_LO21/xmldoc.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QtGui \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessible.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessiblebridge.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessibleobject.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessibleplugin.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbackingstore.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbitmap.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qclipboard.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qcursor.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qdrag.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontinfo.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontmetrics.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericmatrix.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericplugin.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericpluginfactory.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qglyphrun.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qguiapplication.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qicon.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qiconengine.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qiconengineplugin.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimageiohandler.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimagereader.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimagewriter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qinputmethod.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qkeysequence.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmatrix.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmatrix4x4.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmovie.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qoffscreensurface.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengl.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglbuffer.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglcontext.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengldebug.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglextrafunctions.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglframebufferobject.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglfunctions.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglpaintdevice.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglpixeltransferoptions.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglshaderprogram.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltexture.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltextureblitter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltimerquery.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglversionfunctions.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglvertexarrayobject.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglwindow.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagedpaintdevice.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagelayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagesize.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintdevice.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintdevicewindow.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintengine.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpainterpath.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpalette.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpdfwriter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpicture.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpictureformatplugin.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixelformat.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixmapcache.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpolygon.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qquaternion.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrasterwindow.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrawfont.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qregion.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrgb.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrgba64.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qscreen.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsessionmanager.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstandarditemmodel.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstatictext.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstylehints.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsurface.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsurfaceformat.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsyntaxhighlighter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextcursor.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocument.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocumentfragment.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocumentwriter.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextformat.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextlayout.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextlist.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextobject.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextoption.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtexttable.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtouchdevice.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtransform.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector2d.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector3d.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector4d.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindow.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiversion.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/QtXml \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlglobal.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qdom.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qxml.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlversion.h \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/charles/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o xmldoc.o ../projet_LO21/xmldoc.cpp
 
 ####### Install
 
