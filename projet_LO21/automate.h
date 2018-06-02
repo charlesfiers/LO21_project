@@ -24,8 +24,8 @@ public:
     Etat& operator=(const Etat& e);
     void setCellule(unsigned int i, unsigned int j, bool val);
     bool getCellule(unsigned int i, unsigned int j) const;
-    unsigned int getLargeur() const { return dimLargeur; }
-    unsigned int getHauteur() const { return dimHauteur; }
+    unsigned int getDimLargeur() const { return dimLargeur; }
+    unsigned int getDimHauteur() const { return dimHauteur; }
 };
 
 std::ostream& operator<<(std::ostream& f, const Etat& e);
@@ -54,13 +54,13 @@ public:
 
 std::ostream& operator<<(std::ostream& f, const AutomateUneDimension& t);
 
-class AutomateDeuxDimension :public Automate {
-    unsigned short int numCellVivant;
-    unsigned short int numCellMorte;
-    std::string numBitCellVivant;
-    std::string numBitCellMorte;
-    AutomateDeuxDimension(unsigned short int n, unsigned short int m);
-    AutomateDeuxDimension(const std::string& BitVivant,const std::string& BitMorte);
+class AutomateDeuxDimension :public Automate { //Alias JV : Jeu de la vie
+    unsigned short int CellVivanteNbrMinVoisins; //Nombre min de voisins vivants si cellule vivante pour vivre (JV : 2)
+    unsigned short int CellVivanteNbrMaxVoisins; //Nombre max de voisins vivants si cellule vivante pour vivre (JV : 3)
+    unsigned short int CellMorteNbrMinVoisins; //Nombre min de voisins vivants si cellule morte pour vivre (JV : 3)
+    unsigned short int CellMorteNbrMaxVoisins; //Nombre max de voisins vivants si cellule morte pour vivre (JV : 3)
+    AutomateDeuxDimension(unsigned short int minVivante, unsigned short int maxVivante,
+                          unsigned short int minMorte,   unsigned short int maxMorte);
     ~AutomateDeuxDimension() = default;
     AutomateDeuxDimension(const AutomateDeuxDimension& a) = default;
     AutomateDeuxDimension& operator=(const AutomateDeuxDimension& a) = default;
@@ -72,6 +72,7 @@ public:
     unsigned short int getNumCellMorte() const { return numCellMorte; }
     const std::string& getNumeroBitVivant() const { return numBitCellVivant; }
     const std::string& getNumeroBitMorte() const { return numBitCellMorte; }
+    static bool willBeAlive();
     virtual void appliquerTransition(const Etat& dep, Etat& dest) const;
 };
 

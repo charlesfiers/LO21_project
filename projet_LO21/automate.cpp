@@ -58,15 +58,15 @@ bool Etat::getCellule(unsigned int i, unsigned int j) const {
 }
 
 std::ostream& operator<<(std::ostream& f, const Etat& e) {
-    for (unsigned int i = 0; i < e.getHauteur(); i++) {
-        for (unsigned int j = 0; j < e.getLargeur(); j++)
+    for (unsigned int i = 0; i < e.getDimHauteur(); i++) {
+        for (unsigned int j = 0; j < e.getDimLargeur(); j++)
             if (e.getCellule(i, j)) f << char(178); else f << " ";
         f << "\n";
     }
     return f;
 }
 
-//Automate à une dimension
+//AutomateUneDimension
 
 short unsigned int AutomateUneDimension::NumBitToNum(const std::string& num) {
     if (num.size() != 8) throw AutomateException("Numero d'automate indefini");
@@ -97,23 +97,22 @@ std::string AutomateUneDimension::NumToNumBit(short unsigned int num) {
     return numeroBit;
 }
 
-AutomateUneDimension::AutomateUneDimension(unsigned short int num) : numero(num), numeroBit(NumToNumBit(num)){
-}
+AutomateUneDimension::AutomateUneDimension(unsigned short int num) : numero(num), numeroBit(NumToNumBit(num)){}
 
-AutomateUneDimension::AutomateUneDimension(const std::string& num) :numero(NumBitToNum(num)),numeroBit(num) {
-}
-
-
+AutomateUneDimension::AutomateUneDimension(const std::string& num) :numero(NumBitToNum(num)),numeroBit(num) {}
 
 void AutomateUneDimension::appliquerTransition(const Etat& dep, Etat& dest) const {
-    if (dep.getDimension())
-    if (dep.getDimension() != dest.getDimension()) dest = dep;
-    for (unsigned int i = 0; i < dep.getDimension(); i++) {
-        unsigned short int conf=0;
-        if (i > 0) conf+=dep.getCellule(i - 1) * 4;
-        conf+=dep.getCellule(i)*2;
-        if (i < dep.getDimension()-1) conf+=dep.getCellule(i + 1);
-        dest.setCellule(i, numeroBit[7-conf]-'0');
+    if (dep.getDimHauteur() != 1) {
+        throw AutomateException("Automate Dimension Erreur");
+        return;
+    }
+    if (dep.getDimLargeur() != dest.getDimLargeur()) dest = dep;
+    for (unsigned int i = 0; i < dep.getDimLargeur(); i++) {
+        unsigned short int conf = 0;
+        if (i > 0) conf += dep.getCellule(0, i-1) * 4;
+        conf += dep.getCellule(0, i) * 2;
+        if (i < dep.getDimLargeur() - 1) conf += dep.getCellule(0, i+1);
+        dest.setCellule(0, i, numeroBit[7-conf]-'0');
     }
 }
 
@@ -121,6 +120,52 @@ std::ostream& operator<<(std::ostream& f, const Automate& A) {
     f << A.getNumero() << " : " << A.getNumeroBit() << "\n";
     return f;
 }
+
+//AutomateDeuxDimension
+
+AutomateDeuxDimension::AutomateDeuxDimension(unsigned short int minVivante, unsigned short int maxVivante,
+                                             unsigned short int minMorte, unsigned short int maxMorte) :
+    CellVivanteNbrMinVoisins(minVivante), CellVivanteNbrMaxVoisins(maxVivante),
+    CellMorteNbrMinVoisins(minMorte), CellMorteNbrMaxVoisins(maxMorte) {}
+
+bool AutomateDeuxDimension::willBeAlive(unsigned short int n, bool wasAlive) {
+    if (wasAlive)
+        if ((n < CellVivanteNbrMinVoisins) || (n > CellVivanteNbrMaxVoisins))
+            return false;
+        else
+            return true;
+    else
+        if ((n < CellMorteNbrMinVoisins) || (n > CellMorteNbrMaxVoisins))
+            return false;
+        else
+            return true;
+}
+
+void AutomateDeuxDimension::appliquerTransition(const Etat& dep, Etat& dest) const {
+    if (dep.getHauteur() < 2) {
+        throw AutomateException("Automate Dimension Erreur");
+        return;
+    }
+    if ((dep.getLargeur() != dest.getLargeur()) || (dep.getHauteur() != dest.getHauteur())) dest = dep;
+    for (unsigned int i = 0; i < dep.getHauteur(); i++) {
+        for (unsigned int j = 0; j < dep.getLargeur(); j++) {
+            unsigned short int conf = 0;
+            if (i > 0) conf += dep.getCellule(i - 1, j) ;
+            if (i < dep.getHauteur() - 1) conf += dep.getCellule(i + 1, j);
+            if (j > 0) conf += dep.getCellule(i , j-1);
+            if (j < dep.getLargeur() - 1) conf += dep.getCellule(i, j + 1);
+            if (i > 0 && j > 0) conf += dep.getCellule(i - 1, j - 1);
+            if ((i < dep.getHauteur() - 1) && (j < dep.getLargeur() - 1)) conf += dep.getCellule(i + 1, j + 1);
+            if (i > 0 && (j < dep.getLargeur() - 1)) conf += dep.getCellule(i - 1, j + 1);
+            if ((i < dep.getHauteur() - 1) && j > 0) conf += dep.getCellule(i + 1, j - 1);
+            if (dep.getCellule(i, j) == 1)
+                dest.setCellule(i, j, willBeAlive(conf, true));
+            else if (dep.getCellule(i, j) == 0)
+                dest.setCellule(i, j, willBeAlive(conf, false));
+        }
+    }
+}
+
 
 Simulateur::Simulateur(const Automate& a, unsigned int buffer):
     automate(a), etats(nullptr), depart(nullptr), nbMaxEtats(buffer),rang(0) {
