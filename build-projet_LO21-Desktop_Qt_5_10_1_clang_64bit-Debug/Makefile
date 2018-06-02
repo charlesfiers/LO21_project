@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
-DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
 CXXFLAGS      = -std=c++11 -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
-INCPATH       = -I../projet_LO21 -I. -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib
+INCPATH       = -I../projet_LO21 -I. -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib
 QMAKE         = /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -38,7 +38,7 @@ DISTNAME      = projet_LO211.0.0
 DISTDIR = /Users/LeoPrzewlocki/Documents/UTC/(8)\ P18/LO21/Projet\ AutoCell/LO21_project/build-projet_LO21-Desktop_Qt_5_10_1_clang_64bit-Debug/.tmp/projet_LO211.0.0
 LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 LFLAGS        = -std=c++11 -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wl,-rpath,@executable_path/Frameworks -Wl,-rpath,/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib
-LIBS          = $(SUBLIBS) -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework OpenGL -framework AGL 
+LIBS          = $(SUBLIBS) -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework QtXml -framework OpenGL -framework AGL 
 AR            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cq
 RANLIB        = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib -s
 SED           = sed
@@ -50,8 +50,15 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../projet_LO21/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../projet_LO21/main.cpp \
+		../projet_LO21/automate.cpp \
+		../projet_LO21/autocell.cpp \
+		../projet_LO21/Xml_Dom.cpp moc_autocell.cpp
+OBJECTS       = main.o \
+		automate.o \
+		autocell.o \
+		Xml_Dom.o \
+		moc_autocell.o
 DIST          = /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/qdevice.pri \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/device_config.prf \
@@ -215,7 +222,12 @@ DIST          = /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_pr
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/exceptions.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/yacc.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/lex.prf \
-		../projet_LO21/projet_LO21.pro  ../projet_LO21/main.cpp
+		../projet_LO21/projet_LO21.pro ../projet_LO21/automate.h \
+		../projet_LO21/autocell.h \
+		../projet_LO21/Xml_Dom.h ../projet_LO21/main.cpp \
+		../projet_LO21/automate.cpp \
+		../projet_LO21/autocell.cpp \
+		../projet_LO21/Xml_Dom.cpp
 QMAKE_TARGET  = projet_LO21
 DESTDIR       = 
 TARGET        = projet_LO21.app/Contents/MacOS/projet_LO21
@@ -399,6 +411,7 @@ Makefile: ../projet_LO21/projet_LO21.pro /Users/LeoPrzewlocki/Qt/5.10.1/clang_64
 		../projet_LO21/projet_LO21.pro \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/QtWidgets.prl \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/QtGui.prl \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/QtXml.prl \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/QtCore.prl
 	$(QMAKE) -o Makefile ../projet_LO21/projet_LO21.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf:
@@ -567,6 +580,7 @@ Makefile: ../projet_LO21/projet_LO21.pro /Users/LeoPrzewlocki/Qt/5.10.1/clang_64
 ../projet_LO21/projet_LO21.pro:
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/QtWidgets.prl:
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/QtGui.prl:
+/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/QtXml.prl:
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/QtCore.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../projet_LO21/projet_LO21.pro -spec macx-clang CONFIG+=debug CONFIG+=x86_64 CONFIG+=qml_debug
@@ -598,7 +612,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../projet_LO21/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../projet_LO21/automate.h ../projet_LO21/autocell.h ../projet_LO21/Xml_Dom.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../projet_LO21/main.cpp ../projet_LO21/automate.cpp ../projet_LO21/autocell.cpp ../projet_LO21/Xml_Dom.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -630,8 +645,36 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -std=c++11 -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -dM -E -o moc_predefs.h /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_autocell.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_autocell.cpp
+moc_autocell.cpp: /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h \
+		../projet_LO21/autocell.h \
+		moc_predefs.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/bin/moc
+	/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang -I'/Users/LeoPrzewlocki/Documents/UTC/(8) P18/LO21/Projet AutoCell/LO21_project/projet_LO21' -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/9.1.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib ../projet_LO21/autocell.h -o moc_autocell.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -646,13 +689,294 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
 main.o: ../projet_LO21/main.cpp /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
-		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/QtXml \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlglobal.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qdom.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qxml.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlversion.h \
+		../projet_LO21/autocell.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h \
+		../projet_LO21/Xml_Dom.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QtGui \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessible.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessiblebridge.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessibleobject.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessibleplugin.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbackingstore.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbitmap.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qclipboard.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qcursor.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qdrag.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontinfo.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontmetrics.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericmatrix.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericplugin.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericpluginfactory.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qglyphrun.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qguiapplication.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qicon.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qiconengine.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qiconengineplugin.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimageiohandler.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimagereader.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimagewriter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qinputmethod.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qkeysequence.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmatrix.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmatrix4x4.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmovie.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qoffscreensurface.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengl.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglbuffer.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglcontext.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengldebug.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglextrafunctions.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglframebufferobject.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglfunctions.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglpaintdevice.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglpixeltransferoptions.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglshaderprogram.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltexture.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltextureblitter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltimerquery.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglversionfunctions.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglvertexarrayobject.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglwindow.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagedpaintdevice.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagelayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagesize.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintdevice.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintdevicewindow.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintengine.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpainterpath.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpalette.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpdfwriter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpicture.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpictureformatplugin.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixelformat.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixmapcache.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpolygon.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qquaternion.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrasterwindow.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrawfont.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qregion.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrgb.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrgba64.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qscreen.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsessionmanager.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstandarditemmodel.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstatictext.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstylehints.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsurface.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsurfaceformat.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsyntaxhighlighter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextcursor.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocument.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocumentfragment.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocumentwriter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextformat.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextlist.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextobject.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextoption.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtexttable.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtouchdevice.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtransform.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector2d.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector3d.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector4d.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindow.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiversion.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../projet_LO21/main.cpp
+
+automate.o: ../projet_LO21/automate.cpp ../projet_LO21/automate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o automate.o ../projet_LO21/automate.cpp
+
+autocell.o: ../projet_LO21/autocell.cpp ../projet_LO21/autocell.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o autocell.o ../projet_LO21/autocell.cpp
+
+Xml_Dom.o: ../projet_LO21/Xml_Dom.cpp ../projet_LO21/Xml_Dom.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QtGui \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiglobal.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qabstracttextdocumentlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessible.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessiblebridge.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessibleobject.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qaccessibleplugin.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbackingstore.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbitmap.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qbrush.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qclipboard.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qcolor.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qcursor.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qdesktopservices.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qdrag.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qevent.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfont.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontdatabase.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontinfo.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qfontmetrics.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericmatrix.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericplugin.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qgenericpluginfactory.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qglyphrun.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qguiapplication.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qicon.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qiconengine.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qiconengineplugin.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimageiohandler.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimagereader.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qimagewriter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qinputmethod.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qkeysequence.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmatrix.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmatrix4x4.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qmovie.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qoffscreensurface.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengl.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglbuffer.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglcontext.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengldebug.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglextrafunctions.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglframebufferobject.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglfunctions.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglpaintdevice.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglpixeltransferoptions.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglshaderprogram.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltexture.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltextureblitter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopengltimerquery.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglversionfunctions.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglvertexarrayobject.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qopenglwindow.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagedpaintdevice.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagelayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpagesize.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintdevice.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintdevicewindow.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpaintengine.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpainter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpainterpath.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpalette.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpdfwriter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpen.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpicture.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpictureformatplugin.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixelformat.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixmap.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpixmapcache.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qpolygon.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qquaternion.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrasterwindow.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrawfont.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qregion.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrgb.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qrgba64.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qscreen.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsessionmanager.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstandarditemmodel.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstatictext.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qstylehints.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsurface.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsurfaceformat.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qsyntaxhighlighter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextcursor.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocument.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocumentfragment.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextdocumentwriter.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextformat.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextlist.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextobject.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtextoption.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtexttable.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtouchdevice.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtransform.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector2d.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector3d.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvector4d.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindow.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qwindowdefs.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qtguiversion.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/QtXml \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlglobal.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qdom.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qxml.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtXml.framework/Headers/qtxmlversion.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Xml_Dom.o ../projet_LO21/Xml_Dom.cpp
+
+moc_autocell.o: moc_autocell.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_autocell.o moc_autocell.cpp
 
 ####### Install
 
