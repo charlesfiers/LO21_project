@@ -1,49 +1,74 @@
 #include "automate.h"
 
-Etat::Etat(unsigned int n):
-    dimension(n),
-    valeur(new bool [n]) {
-    for (unsigned int i = 0; i < n; i++) valeur[i] = false;
+//Etat
+Etat::Etat(unsigned int h, unsigned int l) : dimHauteur(h), dimLargeur(l), valeur(new bool*[h]) {
+    for (unsigned int i = 0; i < h; i++) {
+        valeur[i] = new bool[l];
+    }
+    for (unsigned int i = 0; i < h; i++) {
+        for (unsigned int j = 0; j < l; j++) {
+            valeur[i][j] = false;
+        }
+    }
 }
 
-void Etat::setCellule(unsigned int i, bool val) {
-    if (i >= dimension) throw AutomateException("Erreur Cellule");
-    valeur[i] = val;
+Etat::~Etat() {
+    for (unsigned int i = 0; i < dimHauteur; i++) delete[] valeur[i];
+    delete[] valeur;
 }
 
-bool Etat::getCellule(unsigned int i) const {
-    if (i >= dimension) throw AutomateException("Erreur Cellule");
-    return valeur[i];
-}
-
-Etat::Etat(const Etat& e):
-    dimension(e.dimension),
-    valeur(new bool[e.dimension])
-{
-    for (unsigned int i = 0; i < dimension; i++) valeur[i] = e.valeur[i];
-}
-
-std::ostream& operator<<(std::ostream& f, const Etat& e) {
-    for (unsigned int i = 0; i < e.getDimension(); i++)
-        if (e.getCellule(i)) f << char(178); else f << " ";
-    return f;
+Etat::Etat(const Etat& e) : dimHauteur(e.dimHauteur), dimLargeur(e.dimLargeur), valeur(new bool*[dimHauteur]) {
+    for (unsigned int i = 0; i < dimHauteur; i++) {
+        valeur[i] = new bool[dimLargeur];
+        for (unsigned int j = 0; j < dimLargeur; j++) valeur[i][j] = e.valeur[i][j];
+    }
 }
 
 Etat& Etat::operator=(const Etat& e) {
     if (this != &e) {
-        if (dimension != e.dimension) {
-            bool* newvaleur = new bool[e.dimension];
-            for (unsigned int i = 0; i < e.dimension; i++) newvaleur[i] = e.valeur[i];
-            bool* old = valeur;
+        if ((dimHauteur != e.dimHauteur) || (dimLargeur != e.dimLargeur)) {
+            bool** newvaleur = new bool*[e.dimHauteur];
+            for (unsigned int i = 0; i < e.dimHauteur; i++) {
+                newvaleur[i] = new bool[e.dimLargeur];
+                for (unsigned int i = 0; i < dimLargeur) newvaleur[i][j] = e.valeur[i][j];
+            }
+            bool** old = valeur;
             valeur = newvaleur;
-            dimension = e.dimension;
+            for (unsigned int i = 0; i < dimHauteur; i++) delete[] old[i];
             delete[] old;
-        }else for (unsigned int i = 0; i < e.dimension; i++) valeur[i] = e.valeur[i];
+            dimHauteur = e.dimHauteur;
+            dimLargeur = e.dimLargeur;
+            delete[] old;
+        }else
+            for (unsigned int i = 0; i < e.dimHauteur; i++)
+                for (unsigned int j = 0; j < e.dimLargeur; i++)
+                    valeur[i][j] = e.valeur[i][j];
     }
     return *this;
 }
 
-short unsigned int NumBitToNum(const std::string& num) {
+void Etat::setCellule(unsigned int i, unsigned int j, bool val) {
+    if ((i >= dimHauteur) || (j >= dimLargeur)) throw AutomateException("Erreur Cellule");
+    valeur[i][j] = val;
+}
+
+bool Etat::getCellule(unsigned int i, unsigned int j) const {
+    if ((i >= dimHauteur) || (j >= dimLargeur)) throw AutomateException("Erreur Cellule");
+    return valeur[i][j];
+}
+
+std::ostream& operator<<(std::ostream& f, const Etat& e) {
+    for (unsigned int i = 0; i < e.getHauteur(); i++) {
+        for (unsigned int j = 0; j < e.getLargeur(); j++)
+            if (e.getCellule(i, j)) f << char(178); else f << " ";
+        f << "\n";
+    }
+    return f;
+}
+
+//Automate à une dimension
+
+short unsigned int AutomateUneDimension::NumBitToNum(const std::string& num) {
     if (num.size() != 8) throw AutomateException("Numero d'automate indefini");
     int puissance = 1;
     short unsigned int numero = 0;
@@ -55,7 +80,7 @@ short unsigned int NumBitToNum(const std::string& num) {
     return numero;
 }
 
-std::string NumToNumBit(short unsigned int num) {
+std::string AutomateUneDimension::NumToNumBit(short unsigned int num) {
     std::string numeroBit;
     if (num > 256) throw AutomateException("Numero d'automate indefini");
     unsigned short int p = 128;
@@ -72,15 +97,16 @@ std::string NumToNumBit(short unsigned int num) {
     return numeroBit;
 }
 
-Automate::Automate(unsigned short int num):numero(num),numeroBit(NumToNumBit(num)){
+AutomateUneDimension::AutomateUneDimension(unsigned short int num) : numero(num), numeroBit(NumToNumBit(num)){
 }
 
-Automate::Automate(const std::string& num) :numero(NumBitToNum(num)),numeroBit(num) {
+AutomateUneDimension::AutomateUneDimension(const std::string& num) :numero(NumBitToNum(num)),numeroBit(num) {
 }
 
 
 
-void Automate::appliquerTransition(const Etat& dep, Etat& dest) const {
+void AutomateUneDimension::appliquerTransition(const Etat& dep, Etat& dest) const {
+    if (dep.getDimension())
     if (dep.getDimension() != dest.getDimension()) dest = dep;
     for (unsigned int i = 0; i < dep.getDimension(); i++) {
         unsigned short int conf=0;

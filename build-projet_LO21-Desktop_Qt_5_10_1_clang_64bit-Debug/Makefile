@@ -10,12 +10,12 @@ MAKEFILE      = Makefile
 
 ####### Compiler, tools and options
 
-CC            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
-CXX           = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
+CC            = /Library/Developer/CommandLineTools/usr/bin/clang
+CXX           = /Library/Developer/CommandLineTools/usr/bin/clang++
 DEFINES       = -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
-CXXFLAGS      = -std=c++11 -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
-INCPATH       = -I../projet_LO21 -I. -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib
+CFLAGS        = -pipe -g $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
+CXXFLAGS      = -std=c++11 -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -fPIC $(DEFINES)
+INCPATH       = -I../projet_LO21 -I. -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/OpenGL.framework/Headers -I/Library/Developer/CommandLineTools/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/AGL.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib
 QMAKE         = /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,11 +36,11 @@ TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = projet_LO211.0.0
 DISTDIR = /Users/LeoPrzewlocki/Documents/UTC/(8)\ P18/LO21/Projet\ AutoCell/LO21_project/build-projet_LO21-Desktop_Qt_5_10_1_clang_64bit-Debug/.tmp/projet_LO211.0.0
-LINK          = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
-LFLAGS        = -std=c++11 -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -Wl,-syslibroot,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wl,-rpath,@executable_path/Frameworks -Wl,-rpath,/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib
+LINK          = /Library/Developer/CommandLineTools/usr/bin/clang++
+LFLAGS        = -std=c++11 -headerpad_max_install_names $(EXPORT_ARCH_ARGS) -Wl,-syslibroot,/Library/Developer/CommandLineTools/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wl,-rpath,@executable_path/Frameworks -Wl,-rpath,/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib
 LIBS          = $(SUBLIBS) -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib -framework QtWidgets -framework QtGui -framework QtCore -framework DiskArbitration -framework IOKit -framework OpenGL -framework AGL 
-AR            = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar cq
-RANLIB        = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib -s
+AR            = /Library/Developer/CommandLineTools/usr/bin/ar cq
+RANLIB        = /Library/Developer/CommandLineTools/usr/bin/ranlib -s
 SED           = sed
 STRIP         = strip
 
@@ -50,8 +50,13 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../projet_LO21/main.cpp 
-OBJECTS       = main.o
+SOURCES       = ../projet_LO21/main.cpp \
+		../projet_LO21/automate.cpp \
+		../projet_LO21/autocell.cpp moc_autocell.cpp
+OBJECTS       = main.o \
+		automate.o \
+		autocell.o \
+		moc_autocell.o
 DIST          = /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/qdevice.pri \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/device_config.prf \
@@ -187,7 +192,6 @@ DIST          = /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_pr
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/qt_config.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_post.prf \
-		../projet_LO21/.qmake.stash \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/mac/sdk.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/toolchain.prf \
@@ -215,7 +219,10 @@ DIST          = /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_pr
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/exceptions.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/yacc.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/lex.prf \
-		../projet_LO21/projet_LO21.pro  ../projet_LO21/main.cpp
+		../projet_LO21/projet_LO21.pro ../projet_LO21/automate.h \
+		../projet_LO21/autocell.h ../projet_LO21/main.cpp \
+		../projet_LO21/automate.cpp \
+		../projet_LO21/autocell.cpp
 QMAKE_TARGET  = projet_LO21
 DESTDIR       = 
 TARGET        = projet_LO21.app/Contents/MacOS/projet_LO21
@@ -368,7 +375,6 @@ Makefile: ../projet_LO21/projet_LO21.pro /Users/LeoPrzewlocki/Qt/5.10.1/clang_64
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/qt_config.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/mac/sdk.prf \
 		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/toolchain.prf \
@@ -536,7 +542,6 @@ Makefile: ../projet_LO21/projet_LO21.pro /Users/LeoPrzewlocki/Qt/5.10.1/clang_64
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/qt_config.prf:
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang/qmake.conf:
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/exclusive_builds.prf:
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/mac/sdk.prf:
 /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/toolchain.prf:
@@ -598,7 +603,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../projet_LO21/main.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../projet_LO21/automate.h ../projet_LO21/autocell.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../projet_LO21/main.cpp ../projet_LO21/automate.cpp ../projet_LO21/autocell.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -608,7 +614,6 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r projet_LO21.app
-	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
@@ -628,10 +633,38 @@ compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++ -std=c++11 -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -dM -E -o moc_predefs.h /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp
+	/Library/Developer/CommandLineTools/usr/bin/clang++ -std=c++11 -g -std=gnu++11 $(EXPORT_ARCH_ARGS) -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.13.sdk -mmacosx-version-min=10.10 -Wall -W -dM -E -o moc_predefs.h /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all:
+compiler_moc_header_make_all: moc_autocell.cpp
 compiler_moc_header_clean:
+	-$(DEL_FILE) moc_autocell.cpp
+moc_autocell.cpp: /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h \
+		../projet_LO21/autocell.h \
+		moc_predefs.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/bin/moc
+	/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/bin/moc $(DEFINES) --include ./moc_predefs.h -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/mkspecs/macx-clang -I'/Users/LeoPrzewlocki/Documents/UTC/(8) P18/LO21/Projet AutoCell/LO21_project/projet_LO21' -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers -I/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers -I. -I/Library/Developer/CommandLineTools/usr/include/c++/v1 -I/Library/Developer/CommandLineTools/usr/lib/clang/9.1.0/include -I/Library/Developer/CommandLineTools/usr/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX10.13.sdk/usr/include -F/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib ../projet_LO21/autocell.h -o moc_autocell.cpp
+
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
@@ -646,13 +679,67 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean 
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
 
 main.o: ../projet_LO21/main.cpp /Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QApplication \
-		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qapplication.h \
+		../projet_LO21/autocell.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../projet_LO21/main.cpp
+
+automate.o: ../projet_LO21/automate.cpp ../projet_LO21/automate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o automate.o ../projet_LO21/automate.cpp
+
+autocell.o: ../projet_LO21/autocell.cpp ../projet_LO21/autocell.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qwidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QSpinBox \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qspinbox.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLineEdit \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlineedit.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QLabel \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qlabel.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QVBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qboxlayout.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHBoxLayout \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/QIntValidator \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtGui.framework/Headers/qvalidator.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/QString \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/QPushButton \
+		/Users/LeoPrzewlocki/Qt/5.10.1/clang_64/lib/QtWidgets.framework/Headers/qpushbutton.h \
+		../projet_LO21/automate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o autocell.o ../projet_LO21/autocell.cpp
+
+moc_autocell.o: moc_autocell.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_autocell.o moc_autocell.cpp
 
 ####### Install
 

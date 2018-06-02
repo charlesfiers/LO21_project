@@ -13,17 +13,19 @@ private:
 };
 
 class Etat {
-    unsigned int dimension;
-    bool* valeur;
+    unsigned int dimHauteur; //Si dimHauteur==1 alors AutomateUneDimension sinon AutomateDeuxDimension
+    unsigned int dimLargeur;
+    bool** valeur;
 public:
-    Etat():dimension(0), valeur(nullptr) {}
-    Etat(unsigned int n);
-    ~Etat() { delete[] valeur; }
+    Etat() : dimHauteur(0), dimLargeur(0), valeur(nullptr) {}
+    Etat(unsigned int h, unsigned int l);
+    ~Etat();
     Etat(const Etat& e);
     Etat& operator=(const Etat& e);
-    void setCellule(unsigned int i, bool val);
-    bool getCellule(unsigned int) const;
-    unsigned int getDimension() const { return dimension; }
+    void setCellule(unsigned int i, unsigned int j, bool val);
+    bool getCellule(unsigned int i, unsigned int j) const;
+    unsigned int getLargeur() const { return dimLargeur; }
+    unsigned int getHauteur() const { return dimHauteur; }
 };
 
 std::ostream& operator<<(std::ostream& f, const Etat& e);
@@ -38,9 +40,9 @@ class AutomateUneDimension : public Automate {
     std::string numeroBit;
     AutomateUneDimension(unsigned short int num);
     AutomateUneDimension(const std::string& num);
-    ~AutomateUneDimension(){}
-    AutomateUneDimension(const AutomateUneDimension& a);
-    AutomateUneDimension& operator=(const AutomateUneDimension& a);
+    ~AutomateUneDimension() = default;
+    AutomateUneDimension(const AutomateUneDimension& a) = default;
+    AutomateUneDimension& operator=(const AutomateUneDimension& a) = default;
     friend class AutomateManager;
     static short unsigned int NumBitToNum(const std::string& num);
     static std::string NumToNumBit(short unsigned int num);
@@ -52,20 +54,24 @@ public:
 
 std::ostream& operator<<(std::ostream& f, const AutomateUneDimension& t);
 
-class AutomateDeuxDimension : public Automate {
-    unsigned short int numero;
-    std::string numeroBit;
-    AutomateDeuxDimension(unsigned short int num);
-    AutomateDeuxDimension(const std::string& num);
-    ~AutomateDeuxDimension(){}
-    AutomateDeuxDimension(const AutomateDeuxDimension& a);
-    AutomateDeuxDimension& operator=(const AutomateDeuxDimension& a);
+class AutomateDeuxDimension :public Automate {
+    unsigned short int numCellVivant;
+    unsigned short int numCellMorte;
+    std::string numBitCellVivant;
+    std::string numBitCellMorte;
+    AutomateDeuxDimension(unsigned short int n, unsigned short int m);
+    AutomateDeuxDimension(const std::string& BitVivant,const std::string& BitMorte);
+    ~AutomateDeuxDimension() = default;
+    AutomateDeuxDimension(const AutomateDeuxDimension& a) = default;
+    AutomateDeuxDimension& operator=(const AutomateDeuxDimension& a) = default;
     friend class AutomateManager;
     static short unsigned int NumBitToNum(const std::string& num);
     static std::string NumToNumBit(short unsigned int num);
 public:
-    unsigned short int getNumero() const { return numero; }
-    const std::string& getNumeroBit() const { return numeroBit; }
+    unsigned short int getNumCellVivant() const { return numCellVivant; }
+    unsigned short int getNumCellMorte() const { return numCellMorte; }
+    const std::string& getNumeroBitVivant() const { return numBitCellVivant; }
+    const std::string& getNumeroBitMorte() const { return numBitCellMorte; }
     virtual void appliquerTransition(const Etat& dep, Etat& dest) const;
 };
 
