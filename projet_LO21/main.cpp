@@ -5,8 +5,7 @@
 #include "xmldoc.h"
 
 
-int main(int argc, char *argv[]) {
-    QApplication app(argc,argv);
+int main() {
     QDomDocument* dom = new QDomDocument("doc1");
     QFile doc_xml("doc1.xml");
     if(!doc_xml.open(QIODevice::ReadOnly | QIODevice::Text))
