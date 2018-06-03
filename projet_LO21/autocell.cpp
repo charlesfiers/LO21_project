@@ -86,17 +86,17 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent){
 }
 
 void AutoCell::faireSimulation(){
-    Etat e(dimension);
+    Etat e(0,dimension);
     for(unsigned int i=0; i<dimension; i++)
-        if (depart->item(0,i)->text()!="") e.setCellule(i,true);
+        if (depart->item(0,i)->text()!="") e.setCellule(0,i,true);
     const Automate& A=
- AutomateManager::getAutomateManager().getAutomate(num->value());
+ AutomateManager::getAutomateManager().getAutomateUneDimension(num->value());
     Simulateur S(A,e);
     for(unsigned int i=0; i<dimension; i++){
         S.next();
         const Etat& d=S.dernier();
         for(unsigned int j=0; j<dimension; j++){
-            if (d.getCellule(j)){
+            if (d.getCellule(0,j)){
                 etats->item(i,j)->setBackgroundColor("black");
             }else{
                 etats->item(i,j)->setBackgroundColor("white");
@@ -120,7 +120,7 @@ void AutoCell::cellActivation(const QModelIndex& index){
 
 
 void AutoCell::synchronizeNumToNumBit(int j){
-    std::string numbit=NumToNumBit(j);
+    std::string numbit=AutomateUneDimension::NumToNumBit(j);
     for(unsigned int i=0; i<8; i++)
         numeroBit[i]->setText(QString(numbit[i]));
 }
@@ -130,7 +130,7 @@ void AutoCell::synchronizeNumBitToNum(const QString& s){
     std::string str;
     for(unsigned int i=0; i<8; i++)
         str+=numeroBit[i]->text().toStdString();
-    int i=NumBitToNum(str);
+    int i=AutomateUneDimension::NumBitToNum(str);
     num->setValue(i);
 }
 

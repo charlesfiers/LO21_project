@@ -30,7 +30,7 @@ Etat& Etat::operator=(const Etat& e) {
             bool** newvaleur = new bool*[e.dimHauteur];
             for (unsigned int i = 0; i < e.dimHauteur; i++) {
                 newvaleur[i] = new bool[e.dimLargeur];
-                for (unsigned int i = 0; i < dimLargeur) newvaleur[i][j] = e.valeur[i][j];
+                for (unsigned int j = 0; j < dimLargeur; j++) newvaleur[i][j] = e.valeur[i][j];
             }
             bool** old = valeur;
             valeur = newvaleur;
@@ -58,8 +58,8 @@ bool Etat::getCellule(unsigned int i, unsigned int j) const {
 }
 
 std::ostream& operator<<(std::ostream& f, const Etat& e) {
-    for (unsigned int i = 0; i < e.getDimHauteur(); i++) {
-        for (unsigned int j = 0; j < e.getDimLargeur(); j++)
+    for (unsigned int i = 0; i < e.getHauteur(); i++) {
+        for (unsigned int j = 0; j < e.getLargeur(); j++)
             if (e.getCellule(i, j)) f << char(178); else f << " ";
         f << "\n";
     }
@@ -68,13 +68,13 @@ std::ostream& operator<<(std::ostream& f, const Etat& e) {
 
 //AutomateUneDimension
 
-short unsigned int AutomateUneDimension::NumBitToNum(const std::string& num) {
-    if (num.size() != 8) throw AutomateException("Numero d'automate indefini");
+short unsigned int AutomateUneDimension::NumBitToNum(const std::string& numBit) {
+    if (numBit.size() != 8) throw AutomateException("Numero d'automate indefini");
     int puissance = 1;
     short unsigned int numero = 0;
     for (int i = 7; i >= 0; i--) {
-        if (num[i] == '1') numero += puissance;
-        else if (num[i] != '0') throw AutomateException("Numero d'automate indefini");
+        if (numBit[i] == '1') numero += puissance;
+        else if (numBit[i] != '0') throw AutomateException("Numero d'automate indefini");
         puissance *= 2;
     }
     return numero;
@@ -102,43 +102,47 @@ AutomateUneDimension::AutomateUneDimension(unsigned short int num) : numero(num)
 AutomateUneDimension::AutomateUneDimension(const std::string& num) :numero(NumBitToNum(num)),numeroBit(num) {}
 
 void AutomateUneDimension::appliquerTransition(const Etat& dep, Etat& dest) const {
-    if (dep.getDimHauteur() != 1) {
+    if (dep.getHauteur() != 1) {
         throw AutomateException("Automate Dimension Erreur");
         return;
     }
-    if (dep.getDimLargeur() != dest.getDimLargeur()) dest = dep;
-    for (unsigned int i = 0; i < dep.getDimLargeur(); i++) {
+    if (dep.getLargeur() != dest.getLargeur()) dest = dep;
+    for (unsigned int i = 0; i < dep.getLargeur(); i++) {
         unsigned short int conf = 0;
         if (i > 0) conf += dep.getCellule(0, i-1) * 4;
         conf += dep.getCellule(0, i) * 2;
-        if (i < dep.getDimLargeur() - 1) conf += dep.getCellule(0, i+1);
+        if (i < dep.getLargeur() - 1) conf += dep.getCellule(0, i+1);
         dest.setCellule(0, i, numeroBit[7-conf]-'0');
     }
 }
 
-std::ostream& operator<<(std::ostream& f, const Automate& A) {
+std::ostream& operator<<(std::ostream& f, const AutomateUneDimension& A) {
     f << A.getNumero() << " : " << A.getNumeroBit() << "\n";
     return f;
 }
 
 //AutomateDeuxDimension
 
-AutomateDeuxDimension::AutomateDeuxDimension(unsigned short int minVivante, unsigned short int maxVivante,
-                                             unsigned short int minMorte, unsigned short int maxMorte) :
-    CellVivanteNbrMinVoisins(minVivante), CellVivanteNbrMaxVoisins(maxVivante),
-    CellMorteNbrMinVoisins(minMorte), CellMorteNbrMaxVoisins(maxMorte) {}
+AutomateDeuxDimension::AutomateDeuxDimension(unsigned short int minV, unsigned short int maxV,
+                                             unsigned short int minM, unsigned short int maxM) :
+    minVivante(minV), maxVivante(maxV), minMorte(minM), maxMorte(maxM) {}
 
-bool AutomateDeuxDimension::willBeAlive(unsigned short int n, bool wasAlive) {
+unsigned int indiceAutomate2d45(unsigned short int min, unsigned short int max) {
+    return ( ( 9*(min)+(max+1) )-( ((min)*(min+1))/2 ) ); //fonction qui
+}
+
+unsigned int indiceAutomate2d2025(unsigned short int minV, unsigned short int maxV,
+                              unsigned short int minM, unsigned short int maxM) {
+    return ( 45*indiceAutomate2d45(minV,maxV) + indiceAutomate2d45(minM,maxM) );
+}
+
+bool AutomateDeuxDimension::willBeAlive(unsigned short int n, bool wasAlive) const {
     if (wasAlive)
-        if ((n < CellVivanteNbrMinVoisins) || (n > CellVivanteNbrMaxVoisins))
-            return false;
-        else
-            return true;
+        if ((n < minVivante) || (n > maxVivante)) return false;
+        else return true;
     else
-        if ((n < CellMorteNbrMinVoisins) || (n > CellMorteNbrMaxVoisins))
-            return false;
-        else
-            return true;
+        if ((n < minMorte) || (n > maxMorte)) return false;
+        else return true;
 }
 
 void AutomateDeuxDimension::appliquerTransition(const Etat& dep, Etat& dest) const {
@@ -166,14 +170,21 @@ void AutomateDeuxDimension::appliquerTransition(const Etat& dep, Etat& dest) con
     }
 }
 
+std::ostream& operator<<(std::ostream& f, const AutomateDeuxDimension& A) {
+    f << "Cell vivante quand vivante et nbr voisins entre " << A.getMinVivante() << " et " << A.getMaxVivante() << "\n";
+    f << "Cell vivante quand morte et nbr voisins entre " << A.getMinMorte() << " et " << A.getMaxMorte() << "\n";
+    return f;
+}
+
+//Simulateur
 
 Simulateur::Simulateur(const Automate& a, unsigned int buffer):
-    automate(a), etats(nullptr), depart(nullptr), nbMaxEtats(buffer),rang(0) {
+    automate(a), nbMaxEtats(buffer) {
     etats = new Etat*[nbMaxEtats];
     for (unsigned int i = 0; i < nbMaxEtats; i++) etats[i] = nullptr;
 }
 Simulateur::Simulateur(const Automate& a, const Etat& dep, unsigned int buffer):
-    automate(a), etats(nullptr), depart(&dep), nbMaxEtats(buffer),rang(0) {
+    automate(a), depart(&dep), nbMaxEtats(buffer) {
     etats = new Etat*[nbMaxEtats];
     for (unsigned int i = 0; i < nbMaxEtats; i++) etats[i] = nullptr;
     etats[0] = new Etat(dep);
@@ -215,12 +226,16 @@ Simulateur::~Simulateur() {
     delete[] etats;
 }
 
+//AutomateManager
+
 AutomateManager::AutomateManager() {
-    for (unsigned int i = 0; i < 256; i++) automates[i] = nullptr;
+    for (unsigned int i = 0; i < 256; i++) automatesUneDimension[i] = nullptr;
+    for (unsigned int i = 0; i < 2025; i++) automatesDeuxDimension[i] = nullptr;
 }
 
 AutomateManager::~AutomateManager() {
-    for (unsigned int i = 0; i < 256; i++) delete automates[i];
+    for (unsigned int i = 0; i < 256; i++) delete automatesUneDimension[i];
+    for (unsigned int i = 0; i < 2025; i++) delete automatesDeuxDimension[i];
 }
 
 AutomateManager::Handler AutomateManager::handler = Handler();
@@ -235,10 +250,17 @@ void AutomateManager::libererAutomateManager() {
     handler.instance = nullptr;
 }
 
-const Automate& AutomateManager::getAutomate(unsigned short int num) {
-    if (!automates[num]) automates[num] = new Automate(num);
-    return *automates[num];
+const AutomateUneDimension& AutomateManager::getAutomateUneDimension(unsigned short int num) {
+    if (!automatesUneDimension[num]) automatesUneDimension[num] = new AutomateUneDimension(num);
+    return *automatesUneDimension[num];
 }
-const Automate& AutomateManager::getAutomate(const std::string& numBit) {
-    return getAutomate(NumBitToNum(numBit));
+
+const AutomateUneDimension& AutomateManager::getAutomateUneDimension(const std::string& numBit) {
+    return getAutomateUneDimension(AutomateUneDimension::NumBitToNum(numBit));
+}
+
+const AutomateDeuxDimension& AutomateManager::getAutomateDeuxDimension(unsigned int minV, unsigned int maxV,
+                                                                      unsigned int minM, unsigned int maxM) {
+    if (!automatesDeuxDimension[indiceAutomate2d2025(minV,maxV,minM,maxM)]) automatesDeuxDimension[indiceAutomate2d2025(minV,maxV,minM,maxM)] = new AutomateDeuxDimension(minV,maxV,minM,maxM);
+    return *automatesDeuxDimension[indiceAutomate2d2025(minV,maxV,minM,maxM)];
 }

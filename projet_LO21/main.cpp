@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <iostream>
+#include "automate.h"
 #include "autocell.h"
 
 using namespace std;
