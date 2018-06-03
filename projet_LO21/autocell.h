@@ -16,6 +16,9 @@
 #include <QCoreApplication>
 #include <stdlib.h>
 #include <QStandardItemModel>
+#include <QThread>
+#include <QComboBox>
+#include <QRadioButton>
 
 class AutoCell : public QWidget{
     Q_OBJECT
@@ -39,6 +42,7 @@ class AutoCell : public QWidget{
     QPushButton* boucle;
     QPushButton* pap;
     QPushButton* rnd;
+    QPushButton* symetrie;
 public:
     explicit AutoCell(QWidget* parent = nullptr);
 private slots:
@@ -49,6 +53,7 @@ private slots:
     void simul2();
     void boucler();
     void etat_rnd();
+    void symetric();
 };
 
 #endif // AUTOCELL_H

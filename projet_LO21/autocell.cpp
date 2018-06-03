@@ -5,6 +5,7 @@ int AutoCell::dimension=25;
 int AutoCell::dimension2=15;
 
 AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
+    symetrie = new QPushButton("Symétrie");
     num = new QSpinBox(this);
     num->setRange(0,255);
     num->setValue(0);
@@ -12,6 +13,7 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
     numc = new QVBoxLayout;
     numc->addWidget(numl);
     numc->addWidget(num);
+    numc->addWidget(symetrie);
 
     numeroc = new QHBoxLayout;
     numeroc->addLayout(numc);
@@ -103,6 +105,7 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
     connect(pap,SIGNAL(clicked(bool)),this,SLOT(simul2()));
     connect(boucle,SIGNAL(clicked(bool)),this,SLOT(boucler()));
     connect(rnd,SIGNAL(clicked(bool)),this,SLOT(etat_rnd()));
+    connect(symetrie,SIGNAL(clicked(bool)),this,SLOT(symetric()));
 
 }
 
@@ -148,8 +151,10 @@ void AutoCell::simul(){
         for(int i=0; i<dimension; i++){
             if(s.dernier().getCellule(i)){
                 simulation->item(j,i)->setBackgroundColor("black");
+                simulation->item(j,i)->setText("_");
             }else{
                 simulation->item(j,i)->setBackgroundColor("white");
+                simulation->item(j,i)->setText("");
             }
         }
     }
@@ -180,11 +185,18 @@ void AutoCell::simul2(){
 
 
 void AutoCell::boucler(){
-    int n = std::time(nullptr);
-    for(int i=1; i<10; i++){
-        num->setValue(i);
+    for(int i=1; i<255; i++){
+        //num->setValue(i);
         simul();
-        while((int)std::time(nullptr) - n != i*pas->value()){
+        QThread::usleep(pas->value()*300);
+        for(int j=0; j<dimension;j++){
+            if(simulation->item(0,j)->text() == ""){
+                depart->item(0,j)->setBackgroundColor("white");
+                depart->item(0,j)->setText("");
+            }else{
+                depart->item(0,j)->setBackgroundColor("black");
+                depart->item(0,j)->setText("_");
+            }
         }
         QCoreApplication::processEvents();
     }
@@ -200,7 +212,21 @@ void AutoCell::etat_rnd(){
         if(r2 > r1){
             depart->item(0,i)->setText("_");
             depart->item(0,i)->setBackgroundColor("black");
-            depart->item(0,i)->setTextColor("black");
+        }else{
+            depart->item(0,i)->setText("");
+            depart->item(0,i)->setBackgroundColor("white");
+        }
+    }
+}
+
+void AutoCell::symetric(){
+    for(int i=0; i<dimension/2;i++){
+        if(depart->item(0,i)->text()=="_"){
+            depart->item(0,dimension-i-1)->setText("_");
+            depart->item(0,dimension-i-1)->setBackgroundColor("black");
+        }else{
+            depart->item(0,dimension-i-1)->setText("");
+            depart->item(0,dimension-i-1)->setBackgroundColor("white");
         }
     }
 }
