@@ -1,10 +1,13 @@
 #include "autocell.h"
 #include "automate.h"
+#include <iterator>
 
-unsigned int AutoCell::dimension = 25;
-unsigned int AutoCell::dimensionHauteur = 8;
+using namespace std;
 
-AutoCell::AutoCell(QWidget* parent) : QWidget(parent) {
+unsigned int AutoCellDim1::dimension = 25;
+unsigned int AutoCellDim1::dimensionHauteur = 8;
+
+AutoCellDim1::AutoCellDim1(/*QWidget* parent*/) /*: QWidget(parent) */{
     srand(time(NULL));
     symetrie = new QPushButton("Symetrie");
     symetrie->setFixedWidth(200);
@@ -130,7 +133,33 @@ AutoCell::AutoCell(QWidget* parent) : QWidget(parent) {
     connect(xml_button2,SIGNAL(clicked(bool)),this,SLOT(charger_xml()));
 }
 
-void AutoCell::cellActivation(const QModelIndex& index) {
+AutoCell* AutoCellDim1::Clone() const {
+    return new AutoCellDim1(*this);
+}
+
+std::map<string,AutoCell*> AutoCellFactory::m_map= std::map<string,AutoCell*>();
+
+void AutoCellFactory::Register(const string& key,AutoCell* obj) {
+    //si la clé n'est pas déjà présente
+    if(m_map.find(key)==m_map.end()) {
+            //on ajoute l'objet dans la map
+            m_map[key]=obj;
+    }
+   //on pourrait détruire obj mais cette tâche ne revient pas à Register
+}
+
+AutoCell* AutoCellFactory::Create(const std::string& key) const {
+    AutoCell* tmp = 0;
+    std::map<string, AutoCell*>::const_iterator it = m_map.find(key);
+    //si l'itérateur ne vaut pas map.end(), cela signifie que que la clé à été trouvée
+    if(it!=m_map.end()) {
+        tmp=((*it).second)->Clone();
+    }
+    //on pourrait lancer une exeption si la clé n'a pas été trouvée
+    return tmp;
+}
+
+void AutoCellDim1::cellActivation(const QModelIndex& index) {
     if (depart->item(0,index.column())->text()=="") { // désactivée
         depart->item(0,index.column())->setText("_");
         depart->item(0,index.column())->setBackgroundColor("black");
@@ -142,7 +171,7 @@ void AutoCell::cellActivation(const QModelIndex& index) {
     }
 }
 
-void AutoCell::simul(){
+void AutoCellDim1::simul(){
     const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
@@ -165,7 +194,7 @@ void AutoCell::simul(){
     }
 }
 
-void AutoCell::simul_pap(){
+void AutoCellDim1::simul_pap(){
     const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
@@ -188,7 +217,7 @@ void AutoCell::simul_pap(){
     if(num->value()>=255) num->setValue(0);
 }
 
-void AutoCell::boucler(){
+void AutoCellDim1::boucler(){
     int i = 0;
     while(stop_v != 1){
         simul();
@@ -214,7 +243,7 @@ void AutoCell::boucler(){
     stop_v = 0;
 }
 
-void AutoCell::etat_rnd(){
+void AutoCellDim1::etat_rnd(){
     int r1 = rand();
     int r2;
     for(int i=0; i< dimension; i++){
@@ -229,7 +258,7 @@ void AutoCell::etat_rnd(){
     }
 }
 
-void AutoCell::symetric(){
+void AutoCellDim1::symetric(){
     for(int i=0; i<dimension/2;i++){
         if(depart->item(0,i)->text()=="_"){
             depart->item(0,dimension-i-1)->setText("_");
@@ -241,23 +270,23 @@ void AutoCell::symetric(){
     }
 }
 
-void AutoCell::synchronizeNumToNumBit(int j) {
-    std::string numbit = AutomateDim1::NumToNumBit(j);
+void AutoCellDim1::synchronizeNumToNumBit(int j) {
+    string numbit = AutomateDim1::NumToNumBit(j);
     for (unsigned int i = 0; i < 8; i++)
         numeroBit[i]->setText(QString(numbit[i]));
 }
 
-void AutoCell::synchronizeNumBitToNum() {
+void AutoCellDim1::synchronizeNumBitToNum() {
     for (unsigned int i = 0; i < 8; i++)
         if (numeroBit[i]->text()=="") return;
-    std::string str;
+    string str;
     for (unsigned int i = 0; i < 8; i++)
         str += numeroBit[i]->text().toStdString();
     int i = AutomateDim1::NumBitToNum(str);
     num->setValue(i);
 }
 
-void AutoCell::export_xml(){
+void AutoCellDim1::export_xml(){
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
         if(depart->item(0,i)->text()!=""){
@@ -268,13 +297,13 @@ void AutoCell::export_xml(){
     doc.ajouter_config(num->value(),e);
 }
 
-void AutoCell::stop_thread(){
+void AutoCellDim1::stop_thread(){
     stop_v = 1;
 }
 
-void AutoCell::charger_xml(){
+void AutoCellDim1::charger_xml(){
     Xml_Dom doc;
     QString s = doc.charger_config();
-    std::string ss = s.toStdString();
-    std::cout << ss << std::endl;
+    string ss = s.toStdString();
+    cout << ss << endl;
 }

@@ -1,5 +1,5 @@
-#ifndef AUTOCELL_H
-#define AUTOCELL_H
+#ifndef AutoCellDim1_H
+#define AutoCellDim1_H
 
 #include "Xml_Dom.h"
 #include <QWidget>
@@ -21,7 +21,19 @@
 #include <QComboBox>
 #include <QRadioButton>
 
-class AutoCell : public QWidget{
+template <class T> class Prototype : public QWidget {
+public:
+    virtual ~Prototype(){}
+    virtual T* Clone() const = 0;
+};
+
+class AutoCell : public Prototype<AutoCell> {
+public:
+    //void save();
+    //void load();
+};
+
+class AutoCellDim1 : public AutoCell {
     Q_OBJECT
     QSpinBox* num; // numéro
     QLabel* numl;
@@ -50,7 +62,8 @@ class AutoCell : public QWidget{
     static unsigned int dimension;
     static unsigned int dimensionHauteur;
 public:
-    explicit AutoCell(QWidget* parent = nullptr);
+    explicit AutoCellDim1(/*QWidget* parent = nullptr*/);
+    AutoCell* Clone() const;
 private slots:
     void synchronizeNumToNumBit(int i);
     void synchronizeNumBitToNum();
@@ -65,4 +78,13 @@ private slots:
     void stop_thread();
 };
 
-#endif // AUTOCELL_H
+class AutoCellFactory {
+    static std::map<std::string,AutoCell*> m_map;
+public:
+    //Fonction qui associe clé <=> prototype
+    static void Register(const std::string& key, AutoCell* obj);
+    //Celle qui va créer les objets
+    AutoCell* Create(const std::string& key) const;
+};
+
+#endif // AutoCellDim1_H
