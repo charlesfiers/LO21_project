@@ -194,7 +194,6 @@ DIST          = /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_pre.prf 
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/qt_config.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_post.prf \
-		../projet_LO21/.qmake.stash \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/mac/sdk.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/toolchain.prf \
@@ -380,7 +379,6 @@ Makefile: ../projet_LO21/projet_LO21.pro /Users/charles/Qt/5.10.1/clang_64/mkspe
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/qt_config.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/macx-clang/qmake.conf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_post.prf \
-		.qmake.stash \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/exclusive_builds.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/mac/sdk.prf \
 		/Users/charles/Qt/5.10.1/clang_64/mkspecs/features/toolchain.prf \
@@ -549,7 +547,6 @@ Makefile: ../projet_LO21/projet_LO21.pro /Users/charles/Qt/5.10.1/clang_64/mkspe
 /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/qt_config.prf:
 /Users/charles/Qt/5.10.1/clang_64/mkspecs/macx-clang/qmake.conf:
 /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/spec_post.prf:
-.qmake.stash:
 /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/exclusive_builds.prf:
 /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/mac/sdk.prf:
 /Users/charles/Qt/5.10.1/clang_64/mkspecs/features/toolchain.prf:
@@ -623,7 +620,6 @@ clean: compiler_clean
 
 distclean: clean 
 	-$(DEL_FILE) -r projet_LO21.app
-	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
 
