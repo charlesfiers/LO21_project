@@ -1,6 +1,9 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
+../build-projet_LO21*
+
+
 *~
 *.autosave
 *.a
@@ -65,7 +68,6 @@ Thumbs.db
 
 # Python byte code
 *.pyc
-../build*
 
 # Binaries
 # --------
