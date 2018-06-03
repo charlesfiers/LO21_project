@@ -192,7 +192,6 @@ void AutoCell::boucler(){
     int i = 0;
     while(stop_v != 1){
         simul();
-        num->setValue(i);
         if(i!=255){
             i++;
         }else{
