@@ -1,12 +1,10 @@
 #include "autocell.h"
 #include "automate.h"
 
-int AutoCell::dimension=15;
-int AutoCell::dimension2=8;
+unsigned int AutoCell::dimension = 25;
+unsigned int AutoCell::dimensionHauteur = 8;
 
-AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
-    srand(time(NULL));
-    symetrie = new QPushButton("Symétrie");
+AutoCell::AutoCell(QWidget* parent) : QWidget(parent) {
     num = new QSpinBox(this);
     num->setRange(0,255);
     num->setValue(0);
@@ -15,22 +13,22 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
     numc->addWidget(numl);
     numc->addWidget(num);
     numc->addWidget(symetrie);
-
     numeroc = new QHBoxLayout;
     numeroc->addLayout(numc);
 
     zeroOneValidator = new QIntValidator(this);
     zeroOneValidator->setRange(0,1);
 
-    for(int i=0; i<8; i++){
+    for (unsigned int i = 0; i < 8; i++) {
         numeroBit[i] = new QLineEdit(this);
         numeroBit[i]->setFixedWidth(20);
         numeroBit[i]->setMaxLength(1);
         numeroBit[i]->setText("0");
+        numeroBit[i]->setValidator(zeroOneValidator);
         numeroBitl[i] = new QLabel;
         bitc[i] = new QVBoxLayout;
-        bitc[i]->addWidget(numeroBit[i]);
         bitc[i]->addWidget(numeroBitl[i]);
+        bitc[i]->addWidget(numeroBit[i]);
         numeroc->addLayout(bitc[i]);
     }
     numeroBitl[0]->setText("111");
@@ -46,13 +44,13 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
     couche->addLayout(numeroc);
     depart = new QTableWidget(1,dimension,this);
 
-    unsigned int taille=25;
+    unsigned int taille = 25;
     depart->setFixedSize(dimension*taille,taille);
     depart->horizontalHeader()->setVisible(false);
     depart->verticalHeader()->setVisible(false);
     depart->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     depart->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    for(int i=0; i<dimension; i++){
+    for (unsigned int i = 0; i < dimension; i++) {
         depart->setColumnWidth(i,taille);
         depart->setItem(0,i,new QTableWidgetItem(""));
     }
@@ -82,15 +80,15 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
     bouclage->addWidget(pap);
     bouclage->addWidget(rnd);
 
-    simulation = new QTableWidget(dimension2,dimension,this);
+    simulation = new QTableWidget(dimensionHauteur,dimension,this);
     couche->addWidget(simulation);
-    simulation->setFixedSize(dimension*taille,dimension2*taille);
+    simulation->setFixedSize(dimension*taille,dimensionHauteur*taille);
     simulation->horizontalHeader()->setVisible(false);
     simulation->verticalHeader()->setVisible(false);
     simulation->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     simulation->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     for(int i=0; i<dimension; i++){
-        for(int j=0; j<dimension2; j++){
+        for(int j=0; j<dimensionHauteur; j++){
             simulation->setColumnWidth(i,taille);
             simulation->setRowHeight(j,taille);
             simulation->setItem(j,i,new QTableWidgetItem(""));
@@ -110,38 +108,21 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
 
     connect(depart,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(cellActivation(QModelIndex)));
     connect(start,SIGNAL(clicked(bool)),this,SLOT(simul()));
-    connect(pap,SIGNAL(clicked(bool)),this,SLOT(simul2()));
+    connect(pap,SIGNAL(clicked(bool)),this,SLOT(simul_pap()));
     connect(boucle,SIGNAL(clicked(bool)),this,SLOT(boucler()));
     connect(stop,SIGNAL(clicked(bool)),this,SLOT(stop_thread()));
     connect(rnd,SIGNAL(clicked(bool)),this,SLOT(etat_rnd()));
     connect(symetrie,SIGNAL(clicked(bool)),this,SLOT(symetric()));
     connect(xml_button,SIGNAL(clicked(bool)),this,SLOT(export_xml()));
     connect(xml_button2,SIGNAL(clicked(bool)),this,SLOT(charger_xml()));
-
 }
 
-void AutoCell::synchronizeNumToNumBit(int j){
-    std::string numbit = NumToNumBit(j);
-    for(int i=0; i<8; i++)
-        numeroBit[i]->setText(QString(numbit[i]));
-}
-
-void AutoCell::synchronizeNumBitToNum(){
-    for(int i=0; i<8; i++)
-        if(numeroBit[i]->text()=="") return;
-    std::string str;
-    for(int i=0; i<8; i++)
-        str += numeroBit[i]->text().toStdString();
-    int i = NumBitToNum(str);
-    num->setValue(i);
-}
-
-void AutoCell::cellActivation(const QModelIndex &index){
-    if(depart->item(0,index.column())->text()==""){
+void AutoCell::cellActivation(const QModelIndex& index) {
+    if (depart->item(0,index.column())->text()=="") { // désactivée
         depart->item(0,index.column())->setText("_");
         depart->item(0,index.column())->setBackgroundColor("black");
         depart->item(0,index.column())->setTextColor("black");
-    }else{
+    } else { // activée
         depart->item(0,index.column())->setText("");
         depart->item(0,index.column())->setBackgroundColor("white");
         depart->item(0,index.column())->setTextColor("white");
@@ -149,18 +130,18 @@ void AutoCell::cellActivation(const QModelIndex &index){
 }
 
 void AutoCell::simul(){
-    const Automate& a = AutomateManager::getAutomateManager().getAutomate(num->value());
-    Etat e(dimension);
+    const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
+    Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
         if(depart->item(0,i)->text()!=""){
-            e.setCellule(i,true);
+            e.setCellule(0,i,true);
         }
     }
     Simulateur s(a,e);
-    for(int j=0; j<dimension2; j++){
+    for(int j=0; j<dimensionHauteur; j++){
         s.next();
         for(int i=0; i<dimension; i++){
-            if(s.dernier().getCellule(i)){
+            if(s.dernier().getCellule(0,i)){
                 simulation->item(j,i)->setBackgroundColor("black");
                 simulation->item(j,i)->setText("_");
             }else{
@@ -171,19 +152,19 @@ void AutoCell::simul(){
     }
 }
 
-void AutoCell::simul2(){
-    const Automate& a = AutomateManager::getAutomateManager().getAutomate(num->value());
-    Etat e(dimension);
+void AutoCell::simul_pap(){
+    const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
+    Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
         if(depart->item(0,i)->text()!=""){
-            e.setCellule(i,true);
+            e.setCellule(0,i,true);
         }
     }
     Simulateur s(a,e);
-    for(int j=0; j<dimension2; j++){
+    for(int j=0; j<dimensionHauteur; j++){
         s.next();
         for(int i=0; i<dimension; i++){
-            if(s.dernier().getCellule(i)){
+            if(s.dernier().getCellule(0,i)){
                 simulation->item(j,i)->setBackgroundColor("black");
             }else{
                 simulation->item(j,i)->setBackgroundColor("white");
@@ -193,7 +174,6 @@ void AutoCell::simul2(){
     num->setValue(num->value()+1);
     if(num->value()>=255) num->setValue(0);
 }
-
 
 void AutoCell::boucler(){
     int i=0;
@@ -244,11 +224,27 @@ void AutoCell::symetric(){
     }
 }
 
+void AutoCell::synchronizeNumToNumBit(int j) {
+    std::string numbit = AutomateDim1::NumToNumBit(j);
+    for (unsigned int i = 0; i < 8; i++)
+        numeroBit[i]->setText(QString(numbit[i]));
+}
+
+void AutoCell::synchronizeNumBitToNum() {
+    for (unsigned int i = 0; i < 8; i++)
+        if (numeroBit[i]->text()=="") return;
+    std::string str;
+    for (unsigned int i = 0; i < 8; i++)
+        str += numeroBit[i]->text().toStdString();
+    int i = AutomateDim1::NumBitToNum(str);
+    num->setValue(i);
+}
+
 void AutoCell::export_xml(){
-    Etat e(dimension);
+    Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
         if(depart->item(0,i)->text()!=""){
-            e.setCellule(i,true);
+            e.setCellule(0,i,true);
         }
     }
     Xml_Dom doc;

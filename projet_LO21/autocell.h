@@ -36,8 +36,6 @@ class AutoCell : public QWidget{
     QTableWidget* depart;
     QVBoxLayout* couche;
     QVBoxLayout* bouclage;
-    static int dimension;
-    static int dimension2;
     QTableWidget* simulation;
     QPushButton* start;
     QPushButton* boucle;
@@ -49,6 +47,8 @@ class AutoCell : public QWidget{
     QPushButton* xml_button2;
 
     bool stop_v;
+    static unsigned int dimension;
+    static unsigned int dimensionHauteur;
 public:
     explicit AutoCell(QWidget* parent = nullptr);
 private slots:
@@ -56,7 +56,7 @@ private slots:
     void synchronizeNumBitToNum();
     void cellActivation(const QModelIndex& index);
     void simul();
-    void simul2();
+    void simul_pap();
     void boucler();
     void etat_rnd();
     void symetric();

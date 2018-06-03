@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_AutoCell_t {
     QByteArrayData data[15];
-    char stringdata0[153];
+    char stringdata0[156];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,18 +39,18 @@ QT_MOC_LITERAL(4, 35, 22), // "synchronizeNumBitToNum"
 QT_MOC_LITERAL(5, 58, 14), // "cellActivation"
 QT_MOC_LITERAL(6, 73, 5), // "index"
 QT_MOC_LITERAL(7, 79, 5), // "simul"
-QT_MOC_LITERAL(8, 85, 6), // "simul2"
-QT_MOC_LITERAL(9, 92, 7), // "boucler"
-QT_MOC_LITERAL(10, 100, 8), // "etat_rnd"
-QT_MOC_LITERAL(11, 109, 8), // "symetric"
-QT_MOC_LITERAL(12, 118, 10), // "export_xml"
-QT_MOC_LITERAL(13, 129, 11), // "charger_xml"
-QT_MOC_LITERAL(14, 141, 11) // "stop_thread"
+QT_MOC_LITERAL(8, 85, 9), // "simul_pap"
+QT_MOC_LITERAL(9, 95, 7), // "boucler"
+QT_MOC_LITERAL(10, 103, 8), // "etat_rnd"
+QT_MOC_LITERAL(11, 112, 8), // "symetric"
+QT_MOC_LITERAL(12, 121, 10), // "export_xml"
+QT_MOC_LITERAL(13, 132, 11), // "charger_xml"
+QT_MOC_LITERAL(14, 144, 11) // "stop_thread"
 
     },
     "AutoCell\0synchronizeNumToNumBit\0\0i\0"
     "synchronizeNumBitToNum\0cellActivation\0"
-    "index\0simul\0simul2\0boucler\0etat_rnd\0"
+    "index\0simul\0simul_pap\0boucler\0etat_rnd\0"
     "symetric\0export_xml\0charger_xml\0"
     "stop_thread"
 };
@@ -108,7 +108,7 @@ void AutoCell::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 1: _t->synchronizeNumBitToNum(); break;
         case 2: _t->cellActivation((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         case 3: _t->simul(); break;
-        case 4: _t->simul2(); break;
+        case 4: _t->simul_pap(); break;
         case 5: _t->boucler(); break;
         case 6: _t->etat_rnd(); break;
         case 7: _t->symetric(); break;
