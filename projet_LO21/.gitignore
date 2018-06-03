@@ -65,7 +65,7 @@ Thumbs.db
 
 # Python byte code
 *.pyc
-build*
+../build*
 
 # Binaries
 # --------
