@@ -13,7 +13,7 @@ private:
 };
 
 class Etat {
-    unsigned int dimHauteur; //Si dimHauteur==1 alors AutomateUneDimension sinon AutomateDeuxDimension
+    unsigned int dimHauteur; //Si dimHauteur==1 alors AutomateDim1 sinon AutomateDim2
     unsigned int dimLargeur;
     bool** valeur;
 public:
@@ -36,14 +36,14 @@ public:
     //QXMLObject save() const;
 };
 
-class AutomateUneDimension : public Automate {
+class AutomateDim1 : public Automate {
     unsigned short int numero;
     std::string numeroBit;
-    AutomateUneDimension(unsigned short int num);
-    AutomateUneDimension(const std::string& num);
-    virtual ~AutomateUneDimension() = default;
-    AutomateUneDimension(const AutomateUneDimension& a) = default;
-    AutomateUneDimension& operator=(const AutomateUneDimension& a) = default;
+    AutomateDim1(unsigned short int num);
+    AutomateDim1(const std::string& num);
+    virtual ~AutomateDim1() = default;
+    AutomateDim1(const AutomateDim1& a) = default;
+    AutomateDim1& operator=(const AutomateDim1& a) = default;
     friend class AutomateManager;
     friend class AutoCell;
     static short unsigned int NumBitToNum(const std::string& numBit);
@@ -54,9 +54,9 @@ public:
     virtual void appliquerTransition(const Etat& dep, Etat& dest) const;
 };
 
-std::ostream& operator<<(std::ostream& f, const AutomateUneDimension& t);
+std::ostream& operator<<(std::ostream& f, const AutomateDim1& t);
 
-class AutomateDeuxDimension :public Automate { //Alias JV : Jeu de la vie
+class AutomateDim2 :public Automate { //Alias JV : Jeu de la vie
     unsigned short int minVivante; //Nombre min de voisins vivants si cellule vivante pour vivre (JV : 2)
     unsigned short int maxVivante; //Nombre max de voisins vivants si cellule vivante pour vivre (JV : 3)
     unsigned short int minMorte; //Nombre min de voisins vivants si cellule morte pour vivre (JV : 3)
@@ -65,11 +65,11 @@ class AutomateDeuxDimension :public Automate { //Alias JV : Jeu de la vie
     static unsigned int indiceAutomate2d2025(unsigned short int minV, unsigned short int maxV,
                                          unsigned short int minM,   unsigned short int maxM
                                          ); //indice dans le tableau de AutomateManager en fonction des 4 attributs (2025 combinaisons)
-    AutomateDeuxDimension(unsigned short int minV, unsigned short int maxV,
+    AutomateDim2(unsigned short int minV, unsigned short int maxV,
                           unsigned short int minM,   unsigned short int maxM);
-    virtual ~AutomateDeuxDimension() = default;
-    AutomateDeuxDimension(const AutomateDeuxDimension& a) = default;
-    AutomateDeuxDimension& operator=(const AutomateDeuxDimension& a) = default;
+    virtual ~AutomateDim2() = default;
+    AutomateDim2(const AutomateDim2& a) = default;
+    AutomateDim2& operator=(const AutomateDim2& a) = default;
     friend class AutomateManager;
 public:
     unsigned short int getMinVivante() const { return minVivante; }
@@ -80,7 +80,7 @@ public:
     virtual void appliquerTransition(const Etat& dep, Etat& dest) const;
 };
 
-std::ostream& operator<<(std::ostream& f, const AutomateDeuxDimension& t);
+std::ostream& operator<<(std::ostream& f, const AutomateDim2& t);
 
 class Simulateur {
     const Automate& automate;
@@ -152,9 +152,6 @@ public:
             return *sim->etats[i%sim->nbMaxEtats];
         }
     };
-    ConstIterator getIterator() const{
-        return ConstIterator(this);
-    }
     ConstIterator getConstIterator() const {
         return ConstIterator(this);
     }
@@ -200,8 +197,6 @@ public:
         bool operator!=(const_iterator it) const { return sim != it.sim || i != it.i; }
     };
 
-    const_iterator begin() const { return const_iterator(this); }
-    const_iterator end() const { if (rang < nbMaxEtats) return const_iterator(this, -1); else return const_iterator(this, rang - nbMaxEtats); }
     const_iterator cbegin() const { return const_iterator(this); }
     const_iterator cend() const { if (rang < nbMaxEtats) return const_iterator(this, -1); else return const_iterator(this, rang - nbMaxEtats); }
 
@@ -211,8 +206,8 @@ public:
 };
 
 class AutomateManager {
-    AutomateUneDimension* automatesUneDimension[256];
-    AutomateDeuxDimension* automatesDeuxDimension[2025];
+    AutomateDim1* automatesUneDimension[256];
+    AutomateDim2* automatesDeuxDimension[2025];
     AutomateManager();
     ~AutomateManager();
     AutomateManager(const AutomateManager& a) = delete;
@@ -224,9 +219,9 @@ class AutomateManager {
     };
     static Handler handler;
 public:
-    const AutomateUneDimension& getAutomateUneDimension(unsigned short int num);
-    const AutomateUneDimension& getAutomateUneDimension(const std::string& numBit);
-    const AutomateDeuxDimension& getAutomateDeuxDimension(unsigned int minV, unsigned int maxV,
+    const AutomateDim1& getAutomateDim1(unsigned short int num);
+    const AutomateDim1& getAutomateDim1(const std::string& numBit);
+    const AutomateDim2& getAutomateDim2(unsigned int minV, unsigned int maxV,
                                                           unsigned int minM, unsigned int maxM);
     static AutomateManager& getAutomateManager();
     static void libererAutomateManager();

@@ -27,6 +27,7 @@ class AutoCell : public QWidget{
     QVBoxLayout* couche;
     QTableWidget* depart;
     static unsigned int dimension;
+    static unsigned int dimensionHauteur;
     QPushButton* simulation;
     QTableWidget* etats;
 public:
