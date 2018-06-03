@@ -1,10 +1,11 @@
 #include "autocell.h"
 #include "automate.h"
 
-int AutoCell::dimension=25;
-int AutoCell::dimension2=15;
+int AutoCell::dimension=15;
+int AutoCell::dimension2=8;
 
 AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
+    srand(time(NULL));
     symetrie = new QPushButton("Symétrie");
     num = new QSpinBox(this);
     num->setRange(0,255);
@@ -63,6 +64,8 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
     bouclage = new QVBoxLayout;
 
     boucle = new QPushButton("Boucler la simulation");
+    stop = new QPushButton("stoper la simulation");
+    stop_v = 0;
 
     pasl = new QLabel("pas");
     pas = new QSpinBox(this);
@@ -73,6 +76,7 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
     rnd = new QPushButton("Etat initial aléatoire");
 
     bouclage->addWidget(boucle);
+    bouclage->addWidget(stop);
     bouclage->addWidget(pasl);
     bouclage->addWidget(pas);
     bouclage->addWidget(pap);
@@ -92,6 +96,10 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
             simulation->setItem(j,i,new QTableWidgetItem(""));
         }
     }
+    xml_button = new QPushButton("exporter en xml");
+    xml_button2 = new QPushButton("charger xml");
+    couche->addWidget(xml_button);
+    couche->addWidget(xml_button2);
     couche->addWidget(simulation);
     setLayout(couche);
 
@@ -104,8 +112,11 @@ AutoCell::AutoCell(QWidget* parent):QWidget(parent) {
     connect(start,SIGNAL(clicked(bool)),this,SLOT(simul()));
     connect(pap,SIGNAL(clicked(bool)),this,SLOT(simul2()));
     connect(boucle,SIGNAL(clicked(bool)),this,SLOT(boucler()));
+    connect(stop,SIGNAL(clicked(bool)),this,SLOT(stop_thread()));
     connect(rnd,SIGNAL(clicked(bool)),this,SLOT(etat_rnd()));
     connect(symetrie,SIGNAL(clicked(bool)),this,SLOT(symetric()));
+    connect(xml_button,SIGNAL(clicked(bool)),this,SLOT(export_xml()));
+    connect(xml_button2,SIGNAL(clicked(bool)),this,SLOT(charger_xml()));
 
 }
 
@@ -185,10 +196,12 @@ void AutoCell::simul2(){
 
 
 void AutoCell::boucler(){
-    for(int i=1; i<255; i++){
+    int i=0;
+    while(i!=255 && stop_v != 1){
+        std::cout << stop_v << std::endl;
         //num->setValue(i);
         simul();
-        QThread::usleep(pas->value()*300);
+        QThread::msleep(pas->value()*75);
         for(int j=0; j<dimension;j++){
             if(simulation->item(0,j)->text() == ""){
                 depart->item(0,j)->setBackgroundColor("white");
@@ -199,14 +212,14 @@ void AutoCell::boucler(){
             }
         }
         QCoreApplication::processEvents();
+        i++;
     }
+    stop_v = 0;
 }
 
 void AutoCell::etat_rnd(){
-    srand(time(NULL));
     int r1 = rand();
     int r2;
-    QModelIndex q;
     for(int i=0; i< dimension; i++){
         r2 = rand();
         if(r2 > r1){
@@ -229,4 +242,27 @@ void AutoCell::symetric(){
             depart->item(0,dimension-i-1)->setBackgroundColor("white");
         }
     }
+}
+
+void AutoCell::export_xml(){
+    Etat e(dimension);
+    for(int i=0; i<dimension; i++){
+        if(depart->item(0,i)->text()!=""){
+            e.setCellule(i,true);
+        }
+    }
+    Xml_Dom doc;
+    doc.ajouter_config(num->value(),e);
+}
+
+void AutoCell::stop_thread(){
+    std::cout << "entrée" << std::endl;
+    stop_v = 1;
+}
+
+void AutoCell::charger_xml(){
+    Xml_Dom doc;
+    QString s = doc.charger_config();
+    std::string ss = s.toStdString();
+    std::cout << ss << std::endl;
 }

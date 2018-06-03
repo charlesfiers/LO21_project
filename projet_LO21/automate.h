@@ -1,5 +1,9 @@
+#ifndef AUTOMATE_H
+#define AUTOMATE_H
+
 #include <string>
 #include <iostream>
+
 
 class AutomateException {
 public:
@@ -189,3 +193,4 @@ public:
     static void libererAutomateManager();
 };
 
+#endif // AUTOMATE_H

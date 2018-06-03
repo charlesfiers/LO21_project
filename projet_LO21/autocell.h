@@ -1,6 +1,7 @@
 #ifndef AUTOCELL_H
 #define AUTOCELL_H
 
+#include "Xml_Dom.h"
 #include <QWidget>
 #include <QSpinBox>
 #include <QLineEdit>
@@ -40,9 +41,14 @@ class AutoCell : public QWidget{
     QTableWidget* simulation;
     QPushButton* start;
     QPushButton* boucle;
+    QPushButton* stop;
     QPushButton* pap;
     QPushButton* rnd;
     QPushButton* symetrie;
+    QPushButton* xml_button;
+    QPushButton* xml_button2;
+
+    bool stop_v;
 public:
     explicit AutoCell(QWidget* parent = nullptr);
 private slots:
@@ -54,6 +60,9 @@ private slots:
     void boucler();
     void etat_rnd();
     void symetric();
+    void export_xml();
+    void charger_xml();
+    void stop_thread();
 };
 
 #endif // AUTOCELL_H
