@@ -73,24 +73,25 @@ class AutoCellDim2 : public QWidget{
     QLabel* max_alive_label;
     QLabel* min_born_label;
     QLabel* max_born_label;
+    QLabel* pas_label;
     QSpinBox* min_alive;
     QSpinBox* max_alive;
     QSpinBox* min_born;
     QSpinBox* max_born;
+    QSpinBox* pas;
     QHBoxLayout* bornes;
     QVBoxLayout* couche;
     QTableWidget* simulation;
     QPushButton* start;
     QPushButton* boucle;
     QPushButton* stop;
-    QPushButton* pap;
     QPushButton* rnd;
+    bool stop_v;
 public:
     explicit AutoCellDim2(QWidget* parent = nullptr);
 private slots:
     void cellActivation(const QModelIndex& index);
     void simul();
-    void simul_pap();
     void boucler();
     void etat_rnd();
     void stop_thread();
