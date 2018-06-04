@@ -21,7 +21,7 @@
 #include <QComboBox>
 #include <QRadioButton>
 
-class AutoCell : public QWidget{
+class AutoCellDim1 : public QWidget{
     Q_OBJECT
     QSpinBox* num; // numéro
     QLabel* numl;
@@ -50,7 +50,7 @@ class AutoCell : public QWidget{
     static unsigned int dimension;
     static unsigned int dimensionHauteur;
 public:
-    explicit AutoCell(QWidget* parent = nullptr);
+    explicit AutoCellDim1(QWidget* parent = nullptr);
 private slots:
     void synchronizeNumToNumBit(int i);
     void synchronizeNumBitToNum();
@@ -62,6 +62,37 @@ private slots:
     void symetric();
     void export_xml();
     void charger_xml();
+    void stop_thread();
+};
+
+class AutoCellDim2 : public QWidget{
+    Q_OBJECT
+    static unsigned int dimension;
+    static unsigned int dimensionHauteur;
+    QLabel* min_alive_label;
+    QLabel* max_alive_label;
+    QLabel* min_born_label;
+    QLabel* max_born_label;
+    QSpinBox* min_alive;
+    QSpinBox* max_alive;
+    QSpinBox* min_born;
+    QSpinBox* max_born;
+    QHBoxLayout* bornes;
+    QVBoxLayout* couche;
+    QTableWidget* simulation;
+    QPushButton* start;
+    QPushButton* boucle;
+    QPushButton* stop;
+    QPushButton* pap;
+    QPushButton* rnd;
+public:
+    explicit AutoCellDim2(QWidget* parent = nullptr);
+private slots:
+    void cellActivation(const QModelIndex& index);
+    void simul();
+    void simul_pap();
+    void boucler();
+    void etat_rnd();
     void stop_thread();
 };
 

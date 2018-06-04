@@ -46,9 +46,10 @@ class AutomateDim1 : public Automate {
     AutomateDim1& operator=(const AutomateDim1& a) = default;
     friend class AutomateManager;
     friend class AutoCell;
+
+public:
     static short unsigned int NumBitToNum(const std::string& numBit);
     static std::string NumToNumBit(short unsigned int num);
-public:
     unsigned short int getNumero() const { return numero; }
     const std::string& getNumeroBit() const { return numeroBit; }
     virtual void appliquerTransition(const Etat& dep, Etat& dest) const;

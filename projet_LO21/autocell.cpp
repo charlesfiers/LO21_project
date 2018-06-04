@@ -1,10 +1,10 @@
 #include "autocell.h"
 #include "automate.h"
 
-unsigned int AutoCell::dimension = 25;
-unsigned int AutoCell::dimensionHauteur = 8;
+unsigned int AutoCellDim1::dimension = 25;
+unsigned int AutoCellDim1::dimensionHauteur = 1;
 
-AutoCell::AutoCell(QWidget* parent) : QWidget(parent) {
+AutoCellDim1::AutoCellDim1(QWidget* parent) : QWidget(parent) {
     srand(time(NULL));
     symetrie = new QPushButton("Symetrie");
     symetrie->setFixedWidth(200);
@@ -130,7 +130,7 @@ AutoCell::AutoCell(QWidget* parent) : QWidget(parent) {
     connect(xml_button2,SIGNAL(clicked(bool)),this,SLOT(charger_xml()));
 }
 
-void AutoCell::cellActivation(const QModelIndex& index) {
+void AutoCellDim1::cellActivation(const QModelIndex& index) {
     if (depart->item(0,index.column())->text()=="") { // désactivée
         depart->item(0,index.column())->setText("_");
         depart->item(0,index.column())->setBackgroundColor("black");
@@ -142,7 +142,7 @@ void AutoCell::cellActivation(const QModelIndex& index) {
     }
 }
 
-void AutoCell::simul(){
+void AutoCellDim1::simul(){
     const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
@@ -165,7 +165,7 @@ void AutoCell::simul(){
     }
 }
 
-void AutoCell::simul_pap(){
+void AutoCellDim1::simul_pap(){
     const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
@@ -188,7 +188,7 @@ void AutoCell::simul_pap(){
     if(num->value()>=255) num->setValue(0);
 }
 
-void AutoCell::boucler(){
+void AutoCellDim1::boucler(){
     int i = 0;
     while(stop_v != 1){
         simul();
@@ -198,7 +198,7 @@ void AutoCell::boucler(){
             i=0;
         }
 
-        QThread::msleep(pas->value()*75);
+        QThread::msleep((6-pas->value())*75);
         for(int j=0; j<dimension;j++){
             if(simulation->item(0,j)->text() == ""){
                 depart->item(0,j)->setBackgroundColor("white");
@@ -213,7 +213,7 @@ void AutoCell::boucler(){
     stop_v = 0;
 }
 
-void AutoCell::etat_rnd(){
+void AutoCellDim1::etat_rnd(){
     int r1 = rand();
     int r2;
     for(int i=0; i< dimension; i++){
@@ -228,7 +228,7 @@ void AutoCell::etat_rnd(){
     }
 }
 
-void AutoCell::symetric(){
+void AutoCellDim1::symetric(){
     for(int i=0; i<dimension/2;i++){
         if(depart->item(0,i)->text()=="_"){
             depart->item(0,dimension-i-1)->setText("_");
@@ -240,13 +240,13 @@ void AutoCell::symetric(){
     }
 }
 
-void AutoCell::synchronizeNumToNumBit(int j) {
+void AutoCellDim1::synchronizeNumToNumBit(int j) {
     std::string numbit = AutomateDim1::NumToNumBit(j);
     for (unsigned int i = 0; i < 8; i++)
         numeroBit[i]->setText(QString(numbit[i]));
 }
 
-void AutoCell::synchronizeNumBitToNum() {
+void AutoCellDim1::synchronizeNumBitToNum() {
     for (unsigned int i = 0; i < 8; i++)
         if (numeroBit[i]->text()=="") return;
     std::string str;
@@ -256,7 +256,7 @@ void AutoCell::synchronizeNumBitToNum() {
     num->setValue(i);
 }
 
-void AutoCell::export_xml(){
+void AutoCellDim1::export_xml(){
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
         if(depart->item(0,i)->text()!=""){
@@ -267,13 +267,200 @@ void AutoCell::export_xml(){
     doc.ajouter_config(num->value(),e);
 }
 
-void AutoCell::stop_thread(){
+void AutoCellDim1::stop_thread(){
     stop_v = 1;
 }
 
-void AutoCell::charger_xml(){
+void AutoCellDim1::charger_xml(){
     Xml_Dom doc;
     QString s = doc.charger_config();
     std::string ss = s.toStdString();
     std::cout << ss << std::endl;
 }
+
+////////////////// AutoCellDim2 /////////////////////
+
+unsigned int AutoCellDim2::dimension = 15;
+unsigned int AutoCellDim2::dimensionHauteur = 15;
+
+AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
+    srand(time(NULL));
+
+    min_alive_label = new QLabel("min neighboors to stay alive");
+    min_alive = new QSpinBox(this);
+    min_alive->setRange(0,8);
+    min_alive->setValue(0);
+    min_alive->setFixedWidth(30);
+
+    max_alive_label = new QLabel("max neighboors to stay alive");
+    max_alive = new QSpinBox(this);
+    max_alive->setRange(0,8);
+    max_alive->setValue(0);
+    max_alive->setFixedWidth(30);
+
+    min_born_label = new QLabel("min neighboors to become alive");
+    min_born = new QSpinBox(this);
+    min_born->setRange(0,8);
+    min_born->setValue(0);
+    min_born->setFixedWidth(30);
+
+    max_born_label = new QLabel("max neighboors to become alive");
+    max_born = new QSpinBox(this);
+    max_born->setRange(0,8);
+    max_born->setValue(0);
+    max_born->setFixedWidth(30);
+
+    couche = new QVBoxLayout;
+    couche->addWidget(min_alive_label);
+    couche->addWidget(min_alive);
+    couche->addWidget(max_alive_label);
+    couche->addWidget(max_alive);
+    couche->addWidget(min_born_label);
+    couche->addWidget(min_born);
+    couche->addWidget(max_born_label);
+    couche->addWidget(max_born);
+
+    bornes = new QHBoxLayout;
+    bornes->addLayout(couche);
+
+    simulation = new QTableWidget(dimensionHauteur,dimension,this);
+    unsigned int taille = 25;
+    simulation->setFixedSize(dimension*taille,dimensionHauteur*taille);
+    simulation->horizontalHeader()->setVisible(false);
+    simulation->verticalHeader()->setVisible(false);
+    simulation->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    simulation->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    for(int i=0; i<dimension; i++){
+       for(int j=0; j<dimensionHauteur; j++){
+           simulation->setColumnWidth(i,taille);
+           simulation->setRowHeight(j,taille);
+           simulation->setItem(j,i,new QTableWidgetItem(""));
+        }
+    }
+    bornes->addWidget(simulation);
+
+    start = new QPushButton("Lancer simulation");
+    start->setFixedWidth(200);
+    boucle = new QPushButton("Boucler simulation");
+    boucle->setFixedWidth(200);
+    rnd = new QPushButton("Etat aléatoire");
+    rnd->setFixedWidth(200);
+    pap = new QPushButton("Pas à pas");
+    pap->setFixedWidth(200);
+    stop = new QPushButton("Stoper simulation");
+    stop->setFixedWidth(200);
+
+    couche->addWidget(start);
+    couche->addWidget(boucle);
+    couche->addWidget(rnd);
+    couche->addWidget(pap);
+    couche->addWidget(stop);
+
+    connect(simulation,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(cellActivation(QModelIndex)));
+    connect(start,SIGNAL(clicked(bool)),this,SLOT(simul()));
+    connect(pap,SIGNAL(clicked(bool)),this,SLOT(simul_pap()));
+    connect(boucle,SIGNAL(clicked(bool)),this,SLOT(boucler()));
+    connect(stop,SIGNAL(clicked(bool)),this,SLOT(stop_thread()));
+    connect(rnd,SIGNAL(clicked(bool)),this,SLOT(etat_rnd()));
+
+    setLayout(bornes);
+}
+
+void AutoCellDim2::cellActivation(const QModelIndex& index) {
+    if (simulation->item(index.row(),index.column())->text()=="") {
+        simulation->item(index.row(),index.column())->setText("_");
+        simulation->item(index.row(),index.column())->setBackgroundColor("black");
+        simulation->item(index.row(),index.column())->setTextColor("black");
+    } else { // activée
+        simulation->item(index.row(),index.column())->setText("");
+        simulation->item(index.row(),index.column())->setBackgroundColor("white");
+        simulation->item(index.row(),index.column())->setTextColor("white");
+    }
+}
+
+/*void AutoCellDim2::simul(){
+    const AutomateDim2& a = AutomateManager::getAutomateManager().getAutomateDim2(num->value());
+    Etat e(1,dimension);
+    for(int i=0; i<dimension; i++){
+        if(depart->item(0,i)->text()!=""){
+            e.setCellule(0,i,true);
+        }
+    }
+    Simulateur s(a,e);
+    for(int j=0; j<dimensionHauteur; j++){
+        s.next();
+        for(int i=0; i<dimension; i++){
+            if(s.dernier().getCellule(0,i)){
+                simulation->item(j,i)->setBackgroundColor("black");
+                simulation->item(j,i)->setText("_");
+            }else{
+                simulation->item(j,i)->setBackgroundColor("white");
+                simulation->item(j,i)->setText("");
+            }
+        }
+    }
+}
+
+void AutoCellDim1::simul_pap(){
+    const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
+    Etat e(1,dimension);
+    for(int i=0; i<dimension; i++){
+        if(depart->item(0,i)->text()!=""){
+            e.setCellule(0,i,true);
+        }
+    }
+    Simulateur s(a,e);
+    for(int j=0; j<dimensionHauteur; j++){
+        s.next();
+        for(int i=0; i<dimension; i++){
+            if(s.dernier().getCellule(0,i)){
+                simulation->item(j,i)->setBackgroundColor("black");
+            }else{
+                simulation->item(j,i)->setBackgroundColor("white");
+            }
+        }
+    }
+    num->setValue(num->value()+1);
+    if(num->value()>=255) num->setValue(0);
+}
+
+void AutoCellDim1::boucler(){
+    int i = 0;
+    while(stop_v != 1){
+        simul();
+        if(i!=255){
+            i++;
+        }else{
+            i=0;
+        }
+
+        QThread::msleep((6-pas->value())*75);
+        for(int j=0; j<dimension;j++){
+            if(simulation->item(0,j)->text() == ""){
+                depart->item(0,j)->setBackgroundColor("white");
+                depart->item(0,j)->setText("");
+            }else{
+                depart->item(0,j)->setBackgroundColor("black");
+                depart->item(0,j)->setText("_");
+            }
+        }
+        QCoreApplication::processEvents();
+    }
+    stop_v = 0;
+}
+
+void AutoCellDim1::etat_rnd(){
+    int r1 = rand();
+    int r2;
+    for(int i=0; i< dimension; i++){
+        r2 = rand();
+        if(r2 > r1){
+            depart->item(0,i)->setText("_");
+            depart->item(0,i)->setBackgroundColor("black");
+        }else{
+            depart->item(0,i)->setText("");
+            depart->item(0,i)->setBackgroundColor("white");
+        }
+    }
+}
+*/

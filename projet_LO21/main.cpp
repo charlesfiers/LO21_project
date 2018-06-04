@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    AutoCell fenetre;
+    AutoCellDim2 fenetre;
     std::cout << "ok final" << std::endl;
     fenetre.show();
     return app.exec();

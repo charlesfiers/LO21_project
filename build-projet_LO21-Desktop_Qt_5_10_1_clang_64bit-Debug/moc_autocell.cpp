@@ -20,43 +20,43 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_AutoCell_t {
+struct qt_meta_stringdata_AutoCellDim1_t {
     QByteArrayData data[15];
-    char stringdata0[156];
+    char stringdata0[160];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_AutoCell_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_AutoCellDim1_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_AutoCell_t qt_meta_stringdata_AutoCell = {
+static const qt_meta_stringdata_AutoCellDim1_t qt_meta_stringdata_AutoCellDim1 = {
     {
-QT_MOC_LITERAL(0, 0, 8), // "AutoCell"
-QT_MOC_LITERAL(1, 9, 22), // "synchronizeNumToNumBit"
-QT_MOC_LITERAL(2, 32, 0), // ""
-QT_MOC_LITERAL(3, 33, 1), // "i"
-QT_MOC_LITERAL(4, 35, 22), // "synchronizeNumBitToNum"
-QT_MOC_LITERAL(5, 58, 14), // "cellActivation"
-QT_MOC_LITERAL(6, 73, 5), // "index"
-QT_MOC_LITERAL(7, 79, 5), // "simul"
-QT_MOC_LITERAL(8, 85, 9), // "simul_pap"
-QT_MOC_LITERAL(9, 95, 7), // "boucler"
-QT_MOC_LITERAL(10, 103, 8), // "etat_rnd"
-QT_MOC_LITERAL(11, 112, 8), // "symetric"
-QT_MOC_LITERAL(12, 121, 10), // "export_xml"
-QT_MOC_LITERAL(13, 132, 11), // "charger_xml"
-QT_MOC_LITERAL(14, 144, 11) // "stop_thread"
+QT_MOC_LITERAL(0, 0, 12), // "AutoCellDim1"
+QT_MOC_LITERAL(1, 13, 22), // "synchronizeNumToNumBit"
+QT_MOC_LITERAL(2, 36, 0), // ""
+QT_MOC_LITERAL(3, 37, 1), // "i"
+QT_MOC_LITERAL(4, 39, 22), // "synchronizeNumBitToNum"
+QT_MOC_LITERAL(5, 62, 14), // "cellActivation"
+QT_MOC_LITERAL(6, 77, 5), // "index"
+QT_MOC_LITERAL(7, 83, 5), // "simul"
+QT_MOC_LITERAL(8, 89, 9), // "simul_pap"
+QT_MOC_LITERAL(9, 99, 7), // "boucler"
+QT_MOC_LITERAL(10, 107, 8), // "etat_rnd"
+QT_MOC_LITERAL(11, 116, 8), // "symetric"
+QT_MOC_LITERAL(12, 125, 10), // "export_xml"
+QT_MOC_LITERAL(13, 136, 11), // "charger_xml"
+QT_MOC_LITERAL(14, 148, 11) // "stop_thread"
 
     },
-    "AutoCell\0synchronizeNumToNumBit\0\0i\0"
-    "synchronizeNumBitToNum\0cellActivation\0"
+    "AutoCellDim1\0synchronizeNumToNumBit\0"
+    "\0i\0synchronizeNumBitToNum\0cellActivation\0"
     "index\0simul\0simul_pap\0boucler\0etat_rnd\0"
     "symetric\0export_xml\0charger_xml\0"
     "stop_thread"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_AutoCell[] = {
+static const uint qt_meta_data_AutoCellDim1[] = {
 
  // content:
        7,       // revision
@@ -98,10 +98,10 @@ static const uint qt_meta_data_AutoCell[] = {
        0        // eod
 };
 
-void AutoCell::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void AutoCellDim1::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        AutoCell *_t = static_cast<AutoCell *>(_o);
+        AutoCellDim1 *_t = static_cast<AutoCellDim1 *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->synchronizeNumToNumBit((*reinterpret_cast< int(*)>(_a[1]))); break;
@@ -120,26 +120,26 @@ void AutoCell::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
     }
 }
 
-QT_INIT_METAOBJECT const QMetaObject AutoCell::staticMetaObject = {
-    { &QWidget::staticMetaObject, qt_meta_stringdata_AutoCell.data,
-      qt_meta_data_AutoCell,  qt_static_metacall, nullptr, nullptr}
+QT_INIT_METAOBJECT const QMetaObject AutoCellDim1::staticMetaObject = {
+    { &QWidget::staticMetaObject, qt_meta_stringdata_AutoCellDim1.data,
+      qt_meta_data_AutoCellDim1,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *AutoCell::metaObject() const
+const QMetaObject *AutoCellDim1::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *AutoCell::qt_metacast(const char *_clname)
+void *AutoCellDim1::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_AutoCell.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_AutoCellDim1.stringdata0))
         return static_cast<void*>(this);
     return QWidget::qt_metacast(_clname);
 }
 
-int AutoCell::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int AutoCellDim1::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -152,6 +152,118 @@ int AutoCell::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         if (_id < 11)
             *reinterpret_cast<int*>(_a[0]) = -1;
         _id -= 11;
+    }
+    return _id;
+}
+struct qt_meta_stringdata_AutoCellDim2_t {
+    QByteArrayData data[9];
+    char stringdata0[80];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_AutoCellDim2_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_AutoCellDim2_t qt_meta_stringdata_AutoCellDim2 = {
+    {
+QT_MOC_LITERAL(0, 0, 12), // "AutoCellDim2"
+QT_MOC_LITERAL(1, 13, 14), // "cellActivation"
+QT_MOC_LITERAL(2, 28, 0), // ""
+QT_MOC_LITERAL(3, 29, 5), // "index"
+QT_MOC_LITERAL(4, 35, 5), // "simul"
+QT_MOC_LITERAL(5, 41, 9), // "simul_pap"
+QT_MOC_LITERAL(6, 51, 7), // "boucler"
+QT_MOC_LITERAL(7, 59, 8), // "etat_rnd"
+QT_MOC_LITERAL(8, 68, 11) // "stop_thread"
+
+    },
+    "AutoCellDim2\0cellActivation\0\0index\0"
+    "simul\0simul_pap\0boucler\0etat_rnd\0"
+    "stop_thread"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_AutoCellDim2[] = {
+
+ // content:
+       7,       // revision
+       0,       // classname
+       0,    0, // classinfo
+       6,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    1,   44,    2, 0x08 /* Private */,
+       4,    0,   47,    2, 0x08 /* Private */,
+       5,    0,   48,    2, 0x08 /* Private */,
+       6,    0,   49,    2, 0x08 /* Private */,
+       7,    0,   50,    2, 0x08 /* Private */,
+       8,    0,   51,    2, 0x08 /* Private */,
+
+ // slots: parameters
+    QMetaType::Void, QMetaType::QModelIndex,    3,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+
+       0        // eod
+};
+
+void AutoCellDim2::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        AutoCellDim2 *_t = static_cast<AutoCellDim2 *>(_o);
+        Q_UNUSED(_t)
+        switch (_id) {
+        case 0: _t->cellActivation((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
+        case 1: _t->simul(); break;
+        case 2: _t->simul_pap(); break;
+        case 3: _t->boucler(); break;
+        case 4: _t->etat_rnd(); break;
+        case 5: _t->stop_thread(); break;
+        default: ;
+        }
+    }
+}
+
+QT_INIT_METAOBJECT const QMetaObject AutoCellDim2::staticMetaObject = {
+    { &QWidget::staticMetaObject, qt_meta_stringdata_AutoCellDim2.data,
+      qt_meta_data_AutoCellDim2,  qt_static_metacall, nullptr, nullptr}
+};
+
+
+const QMetaObject *AutoCellDim2::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *AutoCellDim2::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_AutoCellDim2.stringdata0))
+        return static_cast<void*>(this);
+    return QWidget::qt_metacast(_clname);
+}
+
+int AutoCellDim2::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QWidget::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 6)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 6;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 6)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 6;
     }
     return _id;
 }
