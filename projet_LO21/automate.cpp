@@ -60,7 +60,7 @@ bool Etat::getCellule(unsigned int i, unsigned int j) const {
 std::ostream& operator<<(std::ostream& f, const Etat& e) {
     for (unsigned int i = 0; i < e.getHauteur(); i++) {
         for (unsigned int j = 0; j < e.getLargeur(); j++)
-            if (e.getCellule(i, j)) f << char(178); else f << " ";
+            if (e.getCellule(i, j)) f << "x"; else f << " ";
         f << "\n";
     }
     return f;

@@ -406,6 +406,8 @@ void AutoCellDim2::simul(){
             }
         }
     }
+    std::cout << e << std::endl;
+    std::cout << "======================" << std::endl;
 }
 
 void AutoCellDim2::boucler(){

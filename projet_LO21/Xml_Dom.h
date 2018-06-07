@@ -10,6 +10,7 @@
 #include <QFileDialog>
 #include "automate.h"
 #include <sstream>
+#include <QXmlStreamWriter>
 
 class Xml_Dom : public QWidget
 {
