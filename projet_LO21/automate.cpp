@@ -128,7 +128,7 @@ AutomateDim2::AutomateDim2(unsigned short int minV, unsigned short int maxV,
     minVivante(minV), maxVivante(maxV), minMorte(minM), maxMorte(maxM) {}
 
 unsigned int indiceAutomate2d45(unsigned short int min, unsigned short int max) {
-    return ( ( 9*(min)+(max+1) )-( ((min)*(min+1))/2 ) ); //fonction qui
+    return ( ( 9*(min)+(max+1) )-( ((min)*(min+1))/2 ) );
 }
 
 unsigned int indiceAutomate2d2025(unsigned short int minV, unsigned short int maxV,

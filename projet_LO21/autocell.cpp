@@ -263,8 +263,8 @@ void AutoCellDim1::export_xml(){
             e.setCellule(0,i,true);
         }
     }
-    Xml_Dom doc;
-    doc.ajouter_config(num->value(),e);
+    /*Xml_Dom doc;
+    doc.ajouter_config(num->value(),e);*/
 }
 
 void AutoCellDim1::stop_thread(){
@@ -272,10 +272,10 @@ void AutoCellDim1::stop_thread(){
 }
 
 void AutoCellDim1::charger_xml(){
-    Xml_Dom doc;
+    /*Xml_Dom doc;
     QString s = doc.charger_config();
     std::string ss = s.toStdString();
-    std::cout << ss << std::endl;
+    std::cout << ss << std::endl;*/
 }
 
 ////////////////// AutoCellDim2 /////////////////////
@@ -313,9 +313,15 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
 
     pas_label = new QLabel("Vitesse");
     pas = new QSpinBox(this);
-    pas->setFixedWidth(200);
+    pas->setFixedWidth(30);
     pas->setValue(0);
     pas->setRange(1,5);
+
+    color = new QLabel("Nombre de couleurs");
+    nb_color = new QSpinBox(this);
+    nb_color->setFixedWidth(30);
+    nb_color->setValue(1);
+    nb_color->setRange(1,6);
 
     couche = new QVBoxLayout;
     couche->addWidget(min_alive_label);
@@ -328,6 +334,8 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     couche->addWidget(max_born);
     couche->addWidget(pas_label);
     couche->addWidget(pas);
+    couche->addWidget(color);
+    couche->addWidget(nb_color);
 
     bornes = new QHBoxLayout;
     bornes->addLayout(couche);
@@ -398,7 +406,7 @@ void AutoCellDim2::simul(){
     for(int j=0; j<dimensionHauteur; j++){
         for(int i=0; i<dimension; i++){
             if(s.dernier().getCellule(j,i)){
-                simulation->item(j,i)->setBackgroundColor("black");
+                simulation->item(j,i)->setBackgroundColor(get_color(j,i));
                 simulation->item(j,i)->setText("_");
             }else{
                 simulation->item(j,i)->setBackgroundColor("white");
@@ -406,8 +414,6 @@ void AutoCellDim2::simul(){
             }
         }
     }
-    std::cout << e << std::endl;
-    std::cout << "======================" << std::endl;
 }
 
 void AutoCellDim2::boucler(){
@@ -424,18 +430,143 @@ void AutoCellDim2::stop_thread(){
 }
 
 void AutoCellDim2::etat_rnd(){
+    tab_color[0] = "black";
+    tab_color[1] = "blue";
+    tab_color[2] = "yellow";
+    tab_color[3] = "red";
+    tab_color[4] = "green";
+    tab_color[5] = "magenta";
     int r1 = rand();
     int r2;
+    int r3;
     for(int i=0; i< dimension; i++){
         for(int j=0; j<dimensionHauteur;j++){
             r2 = rand();
             if(r2 > r1){
+                r3 = rand() % nb_color->value();
                 simulation->item(j,i)->setText("_");
-                simulation->item(j,i)->setBackgroundColor("black");
+                simulation->item(j,i)->setBackgroundColor(tab_color[r3]);
             }else{
                 simulation->item(j,i)->setText("");
                 simulation->item(j,i)->setBackgroundColor("white");
             }
         }
     }
+}
+
+QColor AutoCellDim2::get_color(int j, int i){
+    int cpt[nb_color->value()-1];
+    QColor tab[nb_color->value()-1];
+    unsigned int k =0;
+    unsigned int nb_color_diff = 0;
+    for(k=0;k<nb_color->value();k++){
+        cpt[k]=0;
+    }
+    k=0;
+    if(j<dimensionHauteur-1 && simulation->item(j+1,i)->backgroundColor()!="white"){
+        while (k<nb_color->value() && tab[k]!=simulation->item(j+1,i)->backgroundColor()) {
+            if(tab[k]==simulation->item(j+1,i)->backgroundColor()) cpt[k]++;
+            else if(k==nb_color->value()-1){
+                tab[nb_color_diff] = simulation->item(j+1,i)->backgroundColor();
+                cpt[nb_color_diff]++;
+                nb_color_diff++;
+            }
+            k++;
+        }
+        k=0;
+    }
+    if(j<dimensionHauteur-1 && i<dimension-1 && simulation->item(j+1,i+1)->backgroundColor()!="white"){
+        while (k<nb_color->value() && tab[k]!=simulation->item(j+1,i+1)->backgroundColor()) {
+            if(tab[k]==simulation->item(j+1,i+1)->backgroundColor()) cpt[k]++;
+            else if(k==nb_color->value()-1){
+                tab[nb_color_diff] = simulation->item(j+1,i+1)->backgroundColor();
+                cpt[nb_color_diff]++;
+                nb_color_diff++;
+            }
+            k++;
+        }
+        k=0;
+    }
+
+    if(i<dimension-1 && simulation->item(j,i+1)->backgroundColor()!="white"){
+        while (k<nb_color->value() && tab[k]!=simulation->item(j,i+1)->backgroundColor()) {
+            if(tab[k]==simulation->item(j,i+1)->backgroundColor()) cpt[k]++;
+            else if(k==nb_color->value()-1){
+                tab[nb_color_diff] = simulation->item(j,i+1)->backgroundColor();
+                cpt[nb_color_diff]++;
+                nb_color_diff++;
+            }
+            k++;
+        }
+        k=0;
+    }
+
+    if(j>0 && i>0 && simulation->item(j-1,i-1)->backgroundColor()!="white"){
+        while (k<nb_color->value() && tab[k]!=simulation->item(j-1,i-1)->backgroundColor()) {
+            if(tab[k]==simulation->item(j-1,i-1)->backgroundColor()) cpt[k]++;
+            else if(k==nb_color->value()-1){
+                tab[nb_color_diff] = simulation->item(j-1,i-1)->backgroundColor();
+                cpt[nb_color_diff]++;
+                nb_color_diff++;
+            }
+            k++;
+        }
+        k=0;
+    }
+
+    if(i>0 && simulation->item(j,i-1)->backgroundColor()!="white"){
+        while (k<nb_color->value() && tab[k]!=simulation->item(j,i-1)->backgroundColor()) {
+            if(tab[k]==simulation->item(j,i-1)->backgroundColor()) cpt[k]++;
+            else if(k==nb_color->value()-1){
+                tab[nb_color_diff] = simulation->item(j,i-1)->backgroundColor();
+                cpt[nb_color_diff]++;
+                nb_color_diff++;
+            }
+            k++;
+        }
+        k=0;
+    }
+
+    if(j>0 && simulation->item(j-1,i)->backgroundColor()!="white"){
+        while (k<nb_color->value() && tab[k]!=simulation->item(j-1,i)->backgroundColor()) {
+            if(tab[k]==simulation->item(j-1,i)->backgroundColor()) cpt[k]++;
+            else if(k==nb_color->value()-1){
+                tab[nb_color_diff] = simulation->item(j-1,i)->backgroundColor();
+                cpt[nb_color_diff]++;
+                nb_color_diff++;
+            }
+            k++;
+        }
+        k=0;
+    }
+    if(i>0 && j<dimensionHauteur-1 && simulation->item(j+1,i-1)->backgroundColor()!="white"){
+        while (k<nb_color->value() && tab[k]!=simulation->item(j+1,i-1)->backgroundColor()) {
+            if(tab[k]==simulation->item(j+1,i-1)->backgroundColor()) cpt[k]++;
+            else if(k==nb_color->value()-1) {
+                tab[nb_color_diff] = simulation->item(j+1,i-1)->backgroundColor();
+                cpt[nb_color_diff]++;
+                nb_color_diff++;
+            }
+            k++;
+        }
+        k=0;
+    }
+    if(j>0 && i<dimension-1 && simulation->item(j-1,i+1)->backgroundColor()!="white"){
+        while (k<nb_color->value() && tab[k]!=simulation->item(j-1,i+1)->backgroundColor()) {
+            if(tab[k]==simulation->item(j-1,i+1)->backgroundColor()) cpt[k]++;
+            else if(k==nb_color->value()-1) {
+                tab[nb_color_diff] = simulation->item(j-1,i+1)->backgroundColor();
+                cpt[nb_color_diff]++;
+                nb_color_diff++;
+            }
+            k++;
+        }
+    }
+    unsigned int max = 0;
+    unsigned int egalite = 0;
+    for(k=0;k<nb_color_diff;k++){
+        if(cpt[k]>cpt[max]) max = k;
+        if(cpt[k]==cpt[max]) egalite++;
+    }
+    return tab[max];
 }
