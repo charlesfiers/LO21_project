@@ -1,5 +1,5 @@
 # LO21_project
-Projet C++ LO21
+::Projet C++ LO21::
 
 Dans ce projet, il s’agit de concevoir et développer l’application AutoCell, destinée à simuler des automates cellulaires à 1 ou 2 dimensions. Avant de commencer, nous vous invitons à décourvir le mondes très riche des automates cellulaires en consultant, par exemple, la page WikipédiA correspondante.
 1 Description des fonctions principales
