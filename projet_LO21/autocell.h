@@ -95,6 +95,7 @@ class AutoCellDim2 : public QWidget{
     QPushButton* rnd;
     QPushButton* xml_button3;
     QPushButton* xml_button4;
+    QPushButton* reset_button;
     QColor tab_color[6];
     QSlider* slider;
     bool stop_v;
@@ -106,6 +107,7 @@ private slots:
     void simul();
     void slide();
     void boucler();
+    void reset();
     void etat_rnd();
     void stop_thread();
     void export_xml();

@@ -419,6 +419,8 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     rnd->setFixedWidth(200);
     stop = new QPushButton("Stoper simulation");
     stop->setFixedWidth(200);
+    reset_button = new QPushButton("Reset");
+    reset_button->setFixedWidth(200);
 
     xml_button3 = new QPushButton("Exporter en XML Dim2");
     xml_button4 = new QPushButton("Charger XML Dim2");
@@ -432,6 +434,7 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     couche->addWidget(boucle);
     couche->addWidget(rnd);
     couche->addWidget(stop);
+    couche->addWidget(reset_button);
 
     connect(simulation,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(cellActivation(QModelIndex)));
     connect(start,SIGNAL(clicked(bool)),this,SLOT(simul()));
@@ -441,6 +444,7 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     connect(xml_button3,SIGNAL(clicked(bool)),this,SLOT(export_xml()));
     connect(xml_button4,SIGNAL(clicked(bool)),this,SLOT(charger_xml()));
     connect(slider,SIGNAL(valueChanged(int)),this,SLOT(slide()));
+    connect(reset_button,SIGNAL(clicked(bool)),this,SLOT(reset()));
 
     setLayout(bornes);
        // setLayout(couche);
@@ -721,4 +725,13 @@ void AutoCellDim2::slide(){
     }
     connect(simulation,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(cellActivation(QModelIndex)));
     bornes->addWidget(simulation);
+}
+
+void AutoCellDim2::reset(){
+    for(int i=0; i<dimension; i++){
+           for(int j=0; j<dimensionHauteur; j++){
+               simulation->item(j,i)->setText("");
+               simulation->item(j,i)->setBackgroundColor("white");
+            }
+        }
 }
