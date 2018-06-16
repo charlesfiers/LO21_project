@@ -53,17 +53,31 @@ void Etat::setCellule(unsigned int i, unsigned int j, bool val) {
 }
 
 bool Etat::getCellule(unsigned int i, unsigned int j) const {
+    //std::cout<<"h:"<<dimHauteur<<"d:"<<dimLargeur;
     if ((i >= dimHauteur) || (j >= dimLargeur)) throw AutomateException("Erreur Cellule");
+
+    //std::cout<<"jjj";
     return valeur[i][j];
 }
 
 std::ostream& operator<<(std::ostream& f, const Etat& e) {
     for (unsigned int i = 0; i < e.getHauteur(); i++) {
-        for (unsigned int j = 0; j < e.getLargeur(); j++)
-            if (e.getCellule(i, j)) f << char(178); else f << " ";
+        for (unsigned int j = 0; j < e.getLargeur(); j++) {
+            if (e.getCellule(i, j)) f << "x"; else f << " ";
+        }
         f << "\n";
     }
     return f;
+}
+
+
+void Etat::setValue(const std::string & str) {
+    for(unsigned int i=0; i<getHauteur();i++){
+
+    for (unsigned int j = 0; j < getLargeur(); j++){
+        setCellule(i,j,(str.at(j) == 'x'));
+    }
+    }
 }
 
 //AutomateDim1
@@ -127,14 +141,16 @@ AutomateDim2::AutomateDim2(unsigned short int minV, unsigned short int maxV,
                                              unsigned short int minM, unsigned short int maxM) :
     minVivante(minV), maxVivante(maxV), minMorte(minM), maxMorte(maxM) {}
 
-unsigned int indiceAutomate2d45(unsigned short int min, unsigned short int max) {
+unsigned int AutomateDim2::indiceAutomate2d45(unsigned short int min, unsigned short int max) {
     return ( ( 9*(min)+(max+1) )-( ((min)*(min+1))/2 ) ); //fonction qui
 }
 
-unsigned int indiceAutomate2d2025(unsigned short int minV, unsigned short int maxV,
+unsigned int AutomateDim2::indiceAutomate2d2025(unsigned short int minV, unsigned short int maxV,
                               unsigned short int minM, unsigned short int maxM) {
     return ( 45*indiceAutomate2d45(minV,maxV) + indiceAutomate2d45(minM,maxM) );
 }
+
+
 
 bool AutomateDim2::willBeAlive(unsigned short int n, bool wasAlive) const {
     if (wasAlive)
@@ -261,6 +277,7 @@ const AutomateDim1& AutomateManager::getAutomateDim1(const std::string& numBit) 
 
 const AutomateDim2& AutomateManager::getAutomateDim2(unsigned int minV, unsigned int maxV,
                                                                       unsigned int minM, unsigned int maxM) {
-    if (!automatesDeuxDimension[indiceAutomate2d2025(minV,maxV,minM,maxM)]) automatesDeuxDimension[indiceAutomate2d2025(minV,maxV,minM,maxM)] = new AutomateDim2(minV,maxV,minM,maxM);
-    return *automatesDeuxDimension[indiceAutomate2d2025(minV,maxV,minM,maxM)];
+    if (!automatesDeuxDimension[AutomateDim2::indiceAutomate2d2025(minV,maxV,minM,maxM)])
+        automatesDeuxDimension[AutomateDim2::indiceAutomate2d2025(minV,maxV,minM,maxM)] = new AutomateDim2(minV,maxV,minM,maxM);
+    return *automatesDeuxDimension[AutomateDim2::indiceAutomate2d2025(minV,maxV,minM,maxM)];
 }

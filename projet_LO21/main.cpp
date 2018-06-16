@@ -1,11 +1,15 @@
 #include <QApplication>
-#include <iostream>
-#include "autocell.h"
+//#include <iostream>
+//#include "autocell.h"
+#include "mainwindow.h"
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
-    AutoCell fenetre;
-    std::cout << "ok final" << std::endl;
-    fenetre.show();
+    //AutoCellDim1 fenetre;
+
+    FenPrincipale w;
+    w.show();
+
+    //fenetre.show();
     return app.exec();
 }

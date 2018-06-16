@@ -7,10 +7,12 @@ QMAKE_LFLAGS = -std=c++11
 SOURCES += \
     main.cpp \
     automate.cpp \
-    autocell.cpp \
-    Xml_Dom.cpp
+    Xml_Dom.cpp \
+    mainwindow.cpp \
+    autocell.cpp
 
 HEADERS += \
     automate.h \
-    autocell.h \
-    Xml_Dom.h
+    Xml_Dom.h \
+    mainwindow.h \
+    autocell.h

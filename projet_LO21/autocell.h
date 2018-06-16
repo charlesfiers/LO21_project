@@ -1,7 +1,8 @@
 #ifndef AUTOCELL_H
 #define AUTOCELL_H
+//#include "mainwindow.h"
 
-#include "Xml_Dom.h"
+//#include "Xml_Dom.h"
 #include <QWidget>
 #include <QSpinBox>
 #include <QLineEdit>
@@ -20,8 +21,8 @@
 #include <QThread>
 #include <QComboBox>
 #include <QRadioButton>
-
-class AutoCell : public QWidget{
+#include <QMap>
+class AutoCellDim1 : public QWidget{
     Q_OBJECT
     QSpinBox* num; // numéro
     QLabel* numl;
@@ -50,7 +51,7 @@ class AutoCell : public QWidget{
     static unsigned int dimension;
     static unsigned int dimensionHauteur;
 public:
-    explicit AutoCell(QWidget* parent = nullptr);
+    explicit AutoCellDim1(QWidget* parent = nullptr);
 private slots:
     void synchronizeNumToNumBit(int i);
     void synchronizeNumBitToNum();
@@ -65,4 +66,42 @@ private slots:
     void stop_thread();
 };
 
-#endif // AUTOCELL_H
+class AutoCellDim2 : public QWidget{
+    Q_OBJECT
+    static unsigned int dimension;
+    static unsigned int dimensionHauteur;
+    QLabel* min_alive_label;
+    QLabel* max_alive_label;
+    QLabel* min_born_label;
+    QLabel* max_born_label;
+    QLabel* pas_label;
+    QSpinBox* min_alive;
+    QSpinBox* max_alive;
+    QSpinBox* min_born;
+    QSpinBox* max_born;
+    QSpinBox* pas;
+    QHBoxLayout* bornes;
+    QVBoxLayout* couche;
+    QTableWidget* simulation;
+    QPushButton* start;
+    QPushButton* boucle;
+    QPushButton* stop;
+    QPushButton* rnd;
+    QPushButton* xml_button3;
+    QPushButton* xml_button4;
+    bool stop_v;
+public:
+    explicit AutoCellDim2(QWidget* parent = nullptr);
+private slots:
+    void cellActivation(const QModelIndex& index);
+    void simul();
+    void boucler();
+    void etat_rnd();
+    void stop_thread();
+    void export_xml();
+    void charger_xml();
+};
+
+
+
+#endif // AUTOCELLDIM1_H

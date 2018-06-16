@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include "autocell.h"
 
 class AutomateException {
 public:
@@ -26,9 +27,12 @@ public:
     bool getCellule(unsigned int i, unsigned int j) const;
     unsigned int getLargeur() const { return dimLargeur; }
     unsigned int getHauteur() const { return dimHauteur; }
+    void setValue(const std::string & str);
 };
 
 std::ostream& operator<<(std::ostream& f, const Etat& e);
+
+class AutomateManager;
 
 class Automate{
 public:
@@ -45,16 +49,18 @@ class AutomateDim1 : public Automate {
     AutomateDim1(const AutomateDim1& a) = default;
     AutomateDim1& operator=(const AutomateDim1& a) = default;
     friend class AutomateManager;
-    friend class AutoCell;
+    //friend class AutoCell;
+
+public:
     static short unsigned int NumBitToNum(const std::string& numBit);
     static std::string NumToNumBit(short unsigned int num);
-public:
     unsigned short int getNumero() const { return numero; }
     const std::string& getNumeroBit() const { return numeroBit; }
     virtual void appliquerTransition(const Etat& dep, Etat& dest) const;
 };
 
 std::ostream& operator<<(std::ostream& f, const AutomateDim1& t);
+
 
 class AutomateDim2 :public Automate { //Alias JV : Jeu de la vie
     unsigned short int minVivante; //Nombre min de voisins vivants si cellule vivante pour vivre (JV : 2)
@@ -71,6 +77,8 @@ class AutomateDim2 :public Automate { //Alias JV : Jeu de la vie
     AutomateDim2(const AutomateDim2& a) = default;
     AutomateDim2& operator=(const AutomateDim2& a) = default;
     friend class AutomateManager;
+    //static int func();
+    friend class AutoCellDim2;
 public:
     unsigned short int getMinVivante() const { return minVivante; }
     unsigned short int getMaxVivante() const { return maxVivante; }
