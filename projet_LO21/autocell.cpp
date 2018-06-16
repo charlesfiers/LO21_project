@@ -719,6 +719,6 @@ void AutoCellDim2::slide(){
            simulation->setItem(j,i,new QTableWidgetItem(""));
         }
     }
+    connect(simulation,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(cellActivation(QModelIndex)));
     bornes->addWidget(simulation);
-    QCoreApplication::processEvents();
 }
