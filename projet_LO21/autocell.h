@@ -22,6 +22,8 @@
 #include <QComboBox>
 #include <QRadioButton>
 #include <QMap>
+#include <QColor>
+
 class AutoCellDim1 : public QWidget{
     Q_OBJECT
     QSpinBox* num; // numéro
@@ -75,11 +77,13 @@ class AutoCellDim2 : public QWidget{
     QLabel* min_born_label;
     QLabel* max_born_label;
     QLabel* pas_label;
+    QLabel* color;
     QSpinBox* min_alive;
     QSpinBox* max_alive;
     QSpinBox* min_born;
     QSpinBox* max_born;
     QSpinBox* pas;
+    QSpinBox* nb_color;
     QHBoxLayout* bornes;
     QVBoxLayout* couche;
     QTableWidget* simulation;
@@ -89,7 +93,9 @@ class AutoCellDim2 : public QWidget{
     QPushButton* rnd;
     QPushButton* xml_button3;
     QPushButton* xml_button4;
+    QColor tab_color[6];
     bool stop_v;
+    QColor get_color(int,int);
 public:
     explicit AutoCellDim2(QWidget* parent = nullptr);
 private slots:

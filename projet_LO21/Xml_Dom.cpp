@@ -16,7 +16,7 @@ Xml_Dom::Xml_Dom() : QWidget()
 }
 
 QMap<std::string,std::string> Xml_Dom::charger_config(){
-    QFile *file = new QFile("/Users/Vincent/Desktop/doc.xml");
+    QFile *file = new QFile("./doc.xml");
     file->open(QIODevice::ReadOnly | QIODevice::Text);
     QXmlStreamReader xmlReader;
     xmlReader.setDevice(file);
@@ -56,7 +56,7 @@ QMap<std::string,std::string> Xml_Dom::charger_config(){
 
 void Xml_Dom::ajouter_config(int nb, Etat e){
 
-    QFile* file = new QFile("/Users/Vincent/Desktop/doc.xml");
+    QFile* file = new QFile("./doc.xml");
 
     if(!file->open(QIODevice::WriteOnly))
     {
