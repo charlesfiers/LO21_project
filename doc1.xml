@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<LAMPS>
+    <LIGHT1>
+        <State>statevalue</State>
+        <Room>roomvalue</Room>
+        <Potencial>potencialvalue</Potencial>
+    </LIGHT1>
+</LAMPS>
