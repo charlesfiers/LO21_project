@@ -93,7 +93,6 @@ AutoCellDim1::AutoCellDim1(QWidget* parent) : QWidget(parent) {
     bouclage->addWidget(rnd);
 
     simulation = new QTableWidget(dimensionHauteur,dimension,this);
-    couche->addWidget(simulation);
     simulation->setFixedSize(dimension*taille,dimensionHauteur*taille);
     simulation->horizontalHeader()->setVisible(false);
     simulation->verticalHeader()->setVisible(false);
@@ -106,13 +105,13 @@ AutoCellDim1::AutoCellDim1(QWidget* parent) : QWidget(parent) {
             simulation->setItem(j,i,new QTableWidgetItem(""));
         }
     }
+    simulation->setVisible(false);
     xml_button = new QPushButton("Exporter en XML");
     xml_button2 = new QPushButton("Charger XML");
     xml_button->setFixedWidth(200);
     xml_button2->setFixedWidth(200);
     couche->addWidget(xml_button);
     couche->addWidget(xml_button2);
-    couche->addWidget(simulation);
     setLayout(couche);
 
     connect(num,SIGNAL(valueChanged(int)),this,SLOT(synchronizeNumToNumBit(int)));
