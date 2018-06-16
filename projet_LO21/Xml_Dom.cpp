@@ -16,7 +16,7 @@ Xml_Dom::Xml_Dom() : QWidget()
 }
 
 QMap<std::string,std::string> Xml_Dom::charger_config(){
-    QFile *file = new QFile("./doc.xml");
+    QFile *file = new QFile("./dim1.xml");
     file->open(QIODevice::ReadOnly | QIODevice::Text);
     QXmlStreamReader xmlReader;
     xmlReader.setDevice(file);
@@ -56,7 +56,7 @@ QMap<std::string,std::string> Xml_Dom::charger_config(){
 
 void Xml_Dom::ajouter_config(int nb, Etat e){
 
-    QFile* file = new QFile("./doc.xml");
+    QFile* file = new QFile("./dim1.xml");
 
     if(!file->open(QIODevice::WriteOnly))
     {
@@ -90,7 +90,7 @@ void Xml_Dom::ajouter_config(int nb, Etat e){
 }
 
 QMap<std::string,std::string> Xml_Dom::charger_config_dim2(){
-    QFile *file = new QFile("/Users/Vincent/Desktop/doc_dim2.xml");
+    QFile *file = new QFile("./dim2.xml");
     file->open(QIODevice::ReadOnly | QIODevice::Text);
     QXmlStreamReader xmlReader;
     xmlReader.setDevice(file);
@@ -151,7 +151,7 @@ QMap<std::string,std::string> Xml_Dom::charger_config_dim2(){
 
 void Xml_Dom::ajouter_config_dim2(unsigned int minv,unsigned int minm,unsigned int maxv,unsigned int maxm, int nb, Etat e){
 
-    QFile* file = new QFile("/Users/Vincent/Desktop/doc_dim2.xml");
+    QFile* file = new QFile("./dim2.xml");
 
     if(!file->open(QIODevice::WriteOnly))
     {
