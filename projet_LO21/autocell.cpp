@@ -411,6 +411,8 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     }
     bornes->addWidget(simulation);
 
+    lifegame_button = new QPushButton("Jeu de la vie");
+    lifegame_button->setFixedWidth(200);
     start = new QPushButton("Simulation pas à pas");
     start->setFixedWidth(200);
     boucle = new QPushButton("Boucler simulation");
@@ -432,6 +434,7 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
 
     couche->addWidget(start);
     couche->addWidget(boucle);
+    couche->addWidget(lifegame_button);
     couche->addWidget(rnd);
     couche->addWidget(stop);
     couche->addWidget(reset_button);
@@ -445,6 +448,7 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     connect(xml_button4,SIGNAL(clicked(bool)),this,SLOT(charger_xml()));
     connect(slider,SIGNAL(valueChanged(int)),this,SLOT(slide()));
     connect(reset_button,SIGNAL(clicked(bool)),this,SLOT(reset()));
+    connect(lifegame_button,SIGNAL(clicked(bool)),this,SLOT(lifegame()));
 
     setLayout(bornes);
        // setLayout(couche);
@@ -734,4 +738,11 @@ void AutoCellDim2::reset(){
                simulation->item(j,i)->setBackgroundColor("white");
             }
         }
+}
+
+void AutoCellDim2::lifegame(){
+    min_alive->setValue(2);
+    max_alive->setValue(3);
+    min_born->setValue(3);
+    max_born->setValue(3);
 }
