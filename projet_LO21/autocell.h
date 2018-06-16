@@ -23,6 +23,7 @@
 #include <QRadioButton>
 #include <QMap>
 #include <QColor>
+#include <QSlider>
 
 class AutoCellDim1 : public QWidget{
     Q_OBJECT
@@ -70,14 +71,15 @@ private slots:
 
 class AutoCellDim2 : public QWidget{
     Q_OBJECT
-    static unsigned int dimension;
-    static unsigned int dimensionHauteur;
+    unsigned int dimension;
+    unsigned int dimensionHauteur;
     QLabel* min_alive_label;
     QLabel* max_alive_label;
     QLabel* min_born_label;
     QLabel* max_born_label;
     QLabel* pas_label;
     QLabel* color;
+    QLabel* nb_cellules;
     QSpinBox* min_alive;
     QSpinBox* max_alive;
     QSpinBox* min_born;
@@ -94,6 +96,7 @@ class AutoCellDim2 : public QWidget{
     QPushButton* xml_button3;
     QPushButton* xml_button4;
     QColor tab_color[6];
+    QSlider* slider;
     bool stop_v;
     QColor get_color(int,int);
 public:
@@ -101,6 +104,7 @@ public:
 private slots:
     void cellActivation(const QModelIndex& index);
     void simul();
+    void slide();
     void boucler();
     void etat_rnd();
     void stop_thread();

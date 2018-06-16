@@ -327,8 +327,6 @@ void AutoCellDim1::charger_xml(){
 
 ////////////////// AutoCellDim2 /////////////////////
 
-unsigned int AutoCellDim2::dimension = 15;
-unsigned int AutoCellDim2::dimensionHauteur = 15;
 
 AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     stop_v = 0;
@@ -365,10 +363,15 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     pas->setRange(1,5);
 
     color = new QLabel("Nombre de couleurs");
-        nb_color = new QSpinBox(this);
-        nb_color->setFixedWidth(30);
-        nb_color->setValue(1);
-        nb_color->setRange(1,6);
+    nb_color = new QSpinBox(this);
+    nb_color->setFixedWidth(30);
+    nb_color->setValue(1);
+    nb_color->setRange(1,6);
+
+    nb_cellules = new QLabel("Nombre de cellules");
+    slider = new QSlider(Qt::Horizontal,this);
+    slider->setMinimum(10);
+    slider->setMaximum(40);
 
     couche = new QVBoxLayout;
     couche->addWidget(min_alive_label);
@@ -381,15 +384,20 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     couche->addWidget(max_born);
     couche->addWidget(pas_label);
     couche->addWidget(pas);
+    couche->addWidget(nb_cellules);
+    couche->addWidget(slider);
     couche->addWidget(color);
     couche->addWidget(nb_color);
 
     bornes = new QHBoxLayout;
     bornes->addLayout(couche);
+    slider->setValue(15);
+    dimension = slider->value();
+    dimensionHauteur = slider->value();
 
     simulation = new QTableWidget(dimensionHauteur,dimension,this);
     unsigned int taille = 25;
-    simulation->setFixedSize(dimension*taille,dimensionHauteur*taille);
+    simulation->setFixedSize(15*taille,15*taille);
     simulation->horizontalHeader()->setVisible(false);
     simulation->verticalHeader()->setVisible(false);
     simulation->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -432,6 +440,7 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     connect(rnd,SIGNAL(clicked(bool)),this,SLOT(etat_rnd()));
     connect(xml_button3,SIGNAL(clicked(bool)),this,SLOT(export_xml()));
     connect(xml_button4,SIGNAL(clicked(bool)),this,SLOT(charger_xml()));
+    connect(slider,SIGNAL(valueChanged(int)),this,SLOT(slide()));
 
     setLayout(bornes);
        // setLayout(couche);
@@ -692,4 +701,24 @@ void AutoCellDim2::charger_xml(){
 
 }
 
-
+void AutoCellDim2::slide(){
+    dimension = slider->value();
+    dimensionHauteur = slider->value();
+    delete simulation;
+    simulation = new QTableWidget(dimensionHauteur,dimension,this);
+    unsigned int taille = 25;
+    simulation->setFixedSize(15*taille,15*taille);
+    simulation->horizontalHeader()->setVisible(false);
+    simulation->verticalHeader()->setVisible(false);
+    simulation->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    simulation->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    for(int i=0; i<dimension; i++){
+       for(int j=0; j<dimensionHauteur; j++){
+           simulation->setColumnWidth(i,15*taille/dimension);
+           simulation->setRowHeight(j,15*taille/dimensionHauteur);
+           simulation->setItem(j,i,new QTableWidgetItem(""));
+        }
+    }
+    bornes->addWidget(simulation);
+    QCoreApplication::processEvents();
+}
