@@ -48,20 +48,20 @@ AutoCellDim1::AutoCellDim1(QWidget* parent) : QWidget(parent) {
 
     couche = new QVBoxLayout;
     couche->addLayout(numeroc);
-    depart = new QTableWidget(1,dimension,this);
+    simulation = new QTableWidget(1,dimension,this);
 
     unsigned int taille = 25;
-    depart->setFixedSize(dimension*taille,taille);
-    depart->horizontalHeader()->setVisible(false);
-    depart->verticalHeader()->setVisible(false);
-    depart->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    depart->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    simulation->setFixedSize(dimension*taille,taille);
+    simulation->horizontalHeader()->setVisible(false);
+    simulation->verticalHeader()->setVisible(false);
+    simulation->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    simulation->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     for (unsigned int i = 0; i < dimension; i++) {
-        depart->setColumnWidth(i,taille);
-        depart->setItem(0,i,new QTableWidgetItem(""));
+        simulation->setColumnWidth(i,taille);
+        simulation->setItem(0,i,new QTableWidgetItem(""));
     }
 
-    couche->addWidget(depart);
+    couche->addWidget(simulation);
     start = new QPushButton("Lancer simulation");
     start->setFixedWidth(200);
     couche->addWidget(start);
@@ -92,20 +92,7 @@ AutoCellDim1::AutoCellDim1(QWidget* parent) : QWidget(parent) {
     bouclage->addWidget(pap);
     bouclage->addWidget(rnd);
 
-    simulation = new QTableWidget(dimensionHauteur,dimension,this);
-    simulation->setFixedSize(dimension*taille,dimensionHauteur*taille);
-    simulation->horizontalHeader()->setVisible(false);
-    simulation->verticalHeader()->setVisible(false);
-    simulation->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    simulation->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    for(int i=0; i<dimension; i++){
-        for(int j=0; j<dimensionHauteur; j++){
-            simulation->setColumnWidth(i,taille);
-            simulation->setRowHeight(j,taille);
-            simulation->setItem(j,i,new QTableWidgetItem(""));
-        }
-    }
-    simulation->setVisible(false);
+
     xml_button = new QPushButton("Exporter en XML");
     xml_button2 = new QPushButton("Charger XML");
     xml_button->setFixedWidth(200);
@@ -119,7 +106,7 @@ AutoCellDim1::AutoCellDim1(QWidget* parent) : QWidget(parent) {
     for(int i=0; i<8; i++)
         connect(numeroBit[i],SIGNAL(textChanged(QString)),this,SLOT(synchronizeNumBitToNum()));
 
-    connect(depart,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(cellActivation(QModelIndex)));
+    connect(simulation,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(cellActivation(QModelIndex)));
     connect(start,SIGNAL(clicked(bool)),this,SLOT(simul()));
     connect(pap,SIGNAL(clicked(bool)),this,SLOT(simul_pap()));
     connect(boucle,SIGNAL(clicked(bool)),this,SLOT(boucler()));
@@ -131,14 +118,14 @@ AutoCellDim1::AutoCellDim1(QWidget* parent) : QWidget(parent) {
 }
 
 void AutoCellDim1::cellActivation(const QModelIndex& index) {
-    if (depart->item(0,index.column())->text()=="") { // désactivée
-        depart->item(0,index.column())->setText("_");
-        depart->item(0,index.column())->setBackgroundColor("black");
-        depart->item(0,index.column())->setTextColor("black");
+    if (simulation->item(0,index.column())->text()=="") { // désactivée
+        simulation->item(0,index.column())->setText("_");
+        simulation->item(0,index.column())->setBackgroundColor("black");
+        simulation->item(0,index.column())->setTextColor("black");
     } else { // activée
-        depart->item(0,index.column())->setText("");
-        depart->item(0,index.column())->setBackgroundColor("white");
-        depart->item(0,index.column())->setTextColor("white");
+        simulation->item(0,index.column())->setText("");
+        simulation->item(0,index.column())->setBackgroundColor("white");
+        simulation->item(0,index.column())->setTextColor("white");
     }
 }
 
@@ -146,7 +133,7 @@ void AutoCellDim1::simul(){
     const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
-        if(depart->item(0,i)->text()!=""){
+        if(simulation->item(0,i)->text()!=""){
             e.setCellule(0,i,true);
         }
     }
@@ -169,7 +156,7 @@ void AutoCellDim1::simul_pap(){
     const AutomateDim1& a = AutomateManager::getAutomateManager().getAutomateDim1(num->value());
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
-        if(depart->item(0,i)->text()!=""){
+        if(simulation->item(0,i)->text()!=""){
             e.setCellule(0,i,true);
         }
     }
@@ -201,11 +188,11 @@ void AutoCellDim1::boucler(){
         QThread::msleep((6-pas->value())*75);
         for(int j=0; j<dimension;j++){
             if(simulation->item(0,j)->text() == ""){
-                depart->item(0,j)->setBackgroundColor("white");
-                depart->item(0,j)->setText("");
+                simulation->item(0,j)->setBackgroundColor("white");
+                simulation->item(0,j)->setText("");
             }else{
-                depart->item(0,j)->setBackgroundColor("black");
-                depart->item(0,j)->setText("_");
+                simulation->item(0,j)->setBackgroundColor("black");
+                simulation->item(0,j)->setText("_");
             }
         }
         QCoreApplication::processEvents();
@@ -219,23 +206,23 @@ void AutoCellDim1::etat_rnd(){
     for(int i=0; i< dimension; i++){
         r2 = rand();
         if(r2 > r1){
-            depart->item(0,i)->setText("_");
-            depart->item(0,i)->setBackgroundColor("black");
+            simulation->item(0,i)->setText("_");
+            simulation->item(0,i)->setBackgroundColor("black");
         }else{
-            depart->item(0,i)->setText("");
-            depart->item(0,i)->setBackgroundColor("white");
+            simulation->item(0,i)->setText("");
+            simulation->item(0,i)->setBackgroundColor("white");
         }
     }
 }
 
 void AutoCellDim1::symetric(){
     for(int i=0; i<dimension/2;i++){
-        if(depart->item(0,i)->text()=="_"){
-            depart->item(0,dimension-i-1)->setText("_");
-            depart->item(0,dimension-i-1)->setBackgroundColor("black");
+        if(simulation->item(0,i)->text()=="_"){
+            simulation->item(0,dimension-i-1)->setText("_");
+            simulation->item(0,dimension-i-1)->setBackgroundColor("black");
         }else{
-            depart->item(0,dimension-i-1)->setText("");
-            depart->item(0,dimension-i-1)->setBackgroundColor("white");
+            simulation->item(0,dimension-i-1)->setText("");
+            simulation->item(0,dimension-i-1)->setBackgroundColor("white");
         }
     }
 }
@@ -259,7 +246,7 @@ void AutoCellDim1::synchronizeNumBitToNum() {
 void AutoCellDim1::export_xml(){
     Etat e(1,dimension);
     for(int i=0; i<dimension; i++){
-        if(depart->item(0,i)->text()!=""){
+        if(simulation->item(0,i)->text()!=""){
             e.setCellule(0,i,true);
         }
     }
@@ -422,6 +409,8 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     stop->setFixedWidth(200);
     reset_button = new QPushButton("Reset");
     reset_button->setFixedWidth(200);
+    symetrie = new QPushButton("Symétrie");
+    symetrie->setFixedWidth(200);
 
     xml_button3 = new QPushButton("Exporter en XML Dim2");
     xml_button4 = new QPushButton("Charger XML Dim2");
@@ -437,6 +426,7 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     couche->addWidget(rnd);
     couche->addWidget(stop);
     couche->addWidget(reset_button);
+    couche->addWidget(symetrie);
 
     connect(simulation,SIGNAL(doubleClicked(QModelIndex)),this,SLOT(cellActivation(QModelIndex)));
     connect(start,SIGNAL(clicked(bool)),this,SLOT(simul()));
@@ -448,6 +438,8 @@ AutoCellDim2::AutoCellDim2(QWidget* parent) : QWidget(parent) {
     connect(slider,SIGNAL(valueChanged(int)),this,SLOT(slide()));
     connect(reset_button,SIGNAL(clicked(bool)),this,SLOT(reset()));
     connect(lifegame_button,SIGNAL(clicked(bool)),this,SLOT(lifegame()));
+
+    connect(symetrie,SIGNAL(clicked(bool)),this,SLOT(symetric()));
 
     setLayout(bornes);
        // setLayout(couche);
@@ -744,4 +736,19 @@ void AutoCellDim2::lifegame(){
     max_alive->setValue(3);
     min_born->setValue(3);
     max_born->setValue(3);
+}
+
+void AutoCellDim2::symetric(){
+    for(int j=0; j<dimensionHauteur;j++){
+        for(int i=0; i<dimension/2;i++){
+            if(simulation->item(j,i)->text()=="_"){
+                simulation->item(j,dimension-i-1)->setText("_");
+                simulation->item(j,dimension-i-1)->setBackgroundColor(simulation->item(j,i)->backgroundColor());
+            }else{
+                simulation->item(j,dimension-i-1)->setText("");
+                simulation->item(j,dimension-i-1)->setBackgroundColor("white");
+            }
+        }
+
+    }
 }

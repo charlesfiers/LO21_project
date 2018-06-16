@@ -97,6 +97,7 @@ class AutoCellDim2 : public QWidget{
     QPushButton* xml_button4;
     QPushButton* reset_button;
     QPushButton* lifegame_button;
+    QPushButton* symetrie;
     QColor tab_color[6];
     QSlider* slider;
     bool stop_v;
@@ -112,6 +113,7 @@ private slots:
     void reset();
     void etat_rnd();
     void stop_thread();
+    void symetric();
     void export_xml();
     void charger_xml();
 };
